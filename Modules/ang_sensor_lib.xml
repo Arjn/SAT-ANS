@@ -1,0 +1,55 @@
+<data>
+        <!--<observable name="sun">-->
+            <!--<attribute name="direction.x" value="0.0" type="float"/>-->
+            <!--<attribute name="direction.y" value="0.0" type="float"/>-->
+            <!--<attribute name="direction.z" value="0.0" type="float"/>-->
+            <!--<attribute name="range_m" value="3e10" type="float"/>-->
+            <!--<attribute name="base_wavelength_nm" value="500" type="float"/>-->
+            <!--<attribute name="parallax" value="0" type="int"/>-->
+        <!--</observable>-->
+
+        <observable name="star1">
+            <attribute name="direction.x" value="1." type="float"/>
+            <attribute name="direction.y" value="0.0" type="float"/>
+            <attribute name="direction.z" value="0.0" type="float"/>
+            <attribute name="range_m" value="3e12" type="float"/>
+            <attribute name="base_wavelength_nm" value="500" type="float"/>
+            <attribute name="parallax" value="0" type="int"/>
+        </observable>
+
+        <observable name="star2">
+            <attribute name="direction.x" value="0." type="float"/>
+            <attribute name="direction.y" value="1." type="float"/>
+            <attribute name="direction.z" value="0.0" type="float"/>
+            <attribute name="range_m" value="3e12" type="float"/>
+            <attribute name="base_wavelength_nm" value="600" type="float"/>
+            <attribute name="parallax" value="0" type="int"/>
+        </observable>
+
+        <observable name="star3">
+            <attribute name="direction.x" value="0." type="float"/>
+            <attribute name="direction.y" value="0.0" type="float"/>
+            <attribute name="direction.z" value="1." type="float"/>
+            <attribute name="range_m" value="3e12" type="float"/>
+            <attribute name="base_wavelength_nm" value="800" type="float"/>
+            <attribute name="parallax" value="0" type="int"/>
+        </observable>
+
+        <!--<observable name="star4">-->
+            <!--<attribute name="direction.x" value="0." type="float"/>-->
+            <!--<attribute name="direction.y" value="0.0" type="float"/>-->
+            <!--<attribute name="direction.z" value="1." type="float"/>-->
+            <!--<attribute name="range_m" value="3e1" type="float"/>-->
+            <!--<attribute name="base_wavelength_nm" value="800" type="float"/>-->
+            <!--<attribute name="parallax" value="0" type="int"/>-->
+        <!--</observable>-->
+
+        <!--<observable name="star4">-->
+            <!--<attribute name="direction.x" value="-0.5" type="float"/>-->
+            <!--<attribute name="direction.y" value="-0.5" type="float"/>-->
+            <!--<attribute name="direction.z" value="-0.5" type="float"/>-->
+            <!--<attribute name="range_m" value="3e9" type="float"/>-->
+            <!--<attribute name="base_wavelength_nm" value="400" type="float"/>-->
+            <!--<attribute name="parallax" value="0" type="int"/>-->
+        <!--</observable>-->
+</data>
