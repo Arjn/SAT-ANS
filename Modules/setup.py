@@ -73,7 +73,7 @@ NAVIGATION = [dt_nav, P, Q, starting_uncertanty, random_seed]
 
 sim = main.Main(TIMING, ORBITAL, SENSORS, NAVIGATION)
 sim.run_simulation()
-# test test test
+
 #     MSEs_V.append(sim.MSE_V)
 #     MSEs_P.append(sim.MSE_P)
 # np.savetxt('MSE_P.csv', np.array(MSEs_P))
