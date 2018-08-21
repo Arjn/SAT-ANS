@@ -40,7 +40,7 @@ def add_noise(X, Q):
 
 state = [-6045, -3490, 2500, -3.457, 6.618, 2.533]
 mu = 398600.44180000003
-dt = 0.01
+dt = 0.1
 time_end = 50
 
 true_state = []
@@ -51,12 +51,13 @@ for i in range(0,int(time_end/dt)):
     true_state.append(X)
 
 true_state = np.array(true_state)
-q = 0.001
+q = 0.1
 Q = np.diag([0, 0, 0, q, q, q])
-mean_error = []
+mean_error_p = []
+mean_error_v = []
 num_iter = []
-for iter in range(0,4):
-    num_iterations = 10 ** iter
+for iter in range(0,100):
+    num_iterations = 10 * iter
     num_iter.append(num_iterations)
     mean_monte_state =np.zeros(true_state.shape)
     for i in range(0,num_iterations):
@@ -76,10 +77,12 @@ for iter in range(0,4):
         for k in range(0,len(true_state)-1):
             for l in range(0,6):
                 mean_monte_state[k,l] = np.mean([mean_monte_state[k,l], noisy_state[k,l]])
-    mean_error.append(np.mean(abs(true_state[:,0:3] - mean_monte_state[:,0:3])))
+    mean_error_p.append(np.mean(np.sqrt((true_state[:,0:3] - mean_monte_state[:,0:3])**2)))
+    mean_error_v.append(np.mean(np.sqrt((true_state[:, 3:] - mean_monte_state[:, 3:])**2)))
 plt.figure(1)
-plt.loglog(num_iter, mean_error)
-plt.ylabel('mean error [km]')
+plt.loglog(num_iter, mean_error_p, 'x', label='position error')
+plt.loglog(num_iter, mean_error_v, 'x', label='velocity error')
+plt.ylabel('mean error [km]/[km/s]')
 plt.xlabel('number of iterations')
 plt.legend()
 plt.show()

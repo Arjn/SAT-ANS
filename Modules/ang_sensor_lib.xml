@@ -10,8 +10,8 @@
 
         <observable name="star1">
             <attribute name="direction.x" value="1." type="float"/>
-            <attribute name="direction.y" value="0.0" type="float"/>
-            <attribute name="direction.z" value="0.0" type="float"/>
+            <attribute name="direction.y" value="0." type="float"/>
+            <attribute name="direction.z" value="0." type="float"/>
             <attribute name="range_m" value="3e12" type="float"/>
             <attribute name="base_wavelength_nm" value="500" type="float"/>
             <attribute name="parallax" value="0" type="int"/>

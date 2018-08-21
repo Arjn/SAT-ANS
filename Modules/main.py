@@ -208,18 +208,19 @@ class Main(object):
                         # test_storage.append(np.array(np.dot(F_bar.T, self.Q).dot(F_bar)).flatten())
                         self.CRLB.append(np.diag(1/(self.J)))
 
+                        temp = (np.sqrt((self.Orbit.state[0:3] - self.nav_module.filter_state[0:3]) ** 2))
+                        self.MSE_P.append(temp)
+                        temp = (np.sqrt((self.Orbit.state[3:] - self.nav_module.filter_state[3:]) ** 2))
+                        self.MSE_V.append(temp)
+                        test_storage.append(temp.tolist())
+                        timer_storage.append(self.global_timer.value)
+                        storage_true.append(self.Orbit.state)
+                        storage_filter.append(self.nav_module.filter_state)
+                        error = abs(self.Orbit.state - self.nav_module.filter_state)
+                        print(self.global_timer.value)
 
                 F_bar = self.nav_module.dfdx(self.Orbit.state, self.nav_module.dt.value)  # dynamics deriviative for FIM
-                temp = np.mean(np.sqrt((self.Orbit.state[0:3] - self.nav_module.filter_state[0:3])**2))
-                self.MSE_P.append(temp)
-                temp = np.mean(np.sqrt((self.Orbit.state[3:] - self.nav_module.filter_state[3:])**2))
-                self.MSE_V.append(temp)
-                test_storage.append(temp.tolist())
-                timer_storage.append(self.global_timer.value)
-            storage_true.append(self.Orbit.state)
-            storage_filter.append(self.nav_module.filter_state)
-            error = abs(self.Orbit.state - self.nav_module.filter_state)
-            # print(error)
+
 
 
             # print(self.global_timer)
@@ -234,42 +235,43 @@ class Main(object):
         self.nav_module.covar_store = np.array(self.nav_module.covar_store)
         test_storage = np.array(test_storage)
 
-
+        self.MSE_P = np.array(self.MSE_P)
+        self.MSE_V = np.array(self.MSE_V)
 
         plt.figure(6)
         CRLB_P = pd.read_csv('CRLB_P.csv')
         CRLB_V = pd.read_csv('CRLB_V.csv')
 
         printer = ['x', 'y', 'z', 'vx', 'vy', 'vz']
-        # for i in range(0,3):
-        plt.plot(timer_storage, self.MSE_P[:], label='model error position', linewidth=0.5)
+        for i in range(0,3):
+            plt.semilogy(timer_storage, self.MSE_P[:,i], label='model error position', linewidth=0.5)
         print(np.mean(self.MSE_P))
         print(np.mean(self.MSE_V))
 
             # plt.plot(timer_storage, abs(self.nav_module.covar_store[:, i])*3, color='r', label='%s covar' % printer[i])
             # plt.plot(timer_storage, abs(self.nav_module.covar_store[:, i])*-3, color='r')
-        plt.plot(timer_storage[1:], CRLB_P.values[:,0], label='MC CRLB')
-        plt.figure(10)
-        for i in range(0, 3):
-            plt.semilogy(timer_storage[:], (self.CRLB[:, i]), label='analytical CRLB %s' % printer[i])
-        plt.semilogy(timer_storage[1:], CRLB_P.values[:, 0], label='numerical CRLB')
-        plt.title(' position')
-        plt.legend()
+        # plt.plot(CRLB_P.values[:,0], label='MC CRLB')
+        # plt.figure(10)
+        # for i in range(0, 3):
+        plt.semilogy(timer_storage[:], np.sqrt(self.CRLB[:, 0]+ self.CRLB[:, 1] + self.CRLB[:, 3]), label='analytical CRLB %s' % printer[i])
+        # plt.semilogy(timer_storage[1:], np.sqrt(CRLB_P.values), label='numerical CRLB')
+        # plt.title(' position')
+        # plt.legend()
 
         plt.figure(7)
-        # for i in range(3,6):
+        for i in range(0,3):
 
-        plt.plot(timer_storage[:], self.MSE_V[:], label='model error velocity', linewidth=0.5)
+            plt.semilogy(timer_storage[:], self.MSE_V[:,i], label='model error velocity', linewidth=0.5)
 
             # plt.plot(timer_storage, abs(self.nav_module.covar_store[:, i]), label='%s' % printer[i])
             # plt.plot(timer_storage, abs(self.nav_module.covar_store[:, i])*-1, label='%s' % printer[i])
-        plt.plot(timer_storage[1:], CRLB_V.values[:,0], label='MC CRLB')
+        # plt.plot(timer_storage[1:], CRLB_V.values[:,0], label='MC CRLB')
         plt.figure(9)
         for i in range(3, 6):
-            plt.semilogy(timer_storage[:], (self.CRLB[:, i]), label='analytical CRLB %s' % printer[i])
+            plt.semilogy(timer_storage[:], np.sqrt(self.CRLB[:, i]), label=' sqrtanalytical CRLB %s' % printer[i])
             # plt.plot(timer_storage, storage_true[:, i], 'o', markersize=1, label=('filter'))
         plt.title('speed')
-        plt.semilogy(timer_storage[1:], CRLB_V.values[:, 0], label='Numerical CRLB')
+        # plt.semilogy(timer_storage[1:], np.sqrt(CRLB_V.values[:, 0]), label='Numerical CRLB')
         plt.legend()
 
         # print("RMS pos : mean error = %f \t  RMS vel = %f" % (np.mean(abs(test_storage[:,0:3])),

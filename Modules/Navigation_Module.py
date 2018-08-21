@@ -238,7 +238,7 @@ class NavModule(object):
                 self.residual_h.append(sens.residual_h)
                 self.z_mean.append(sens.z_mean)
                 self.num_obs.append(len(sens.measurements.values())*sens.vec_length)
-                self.R_num.extend(int(len(sens.measurements.values())*sens.vec_length/len(sens.R_params)) * sens.R_params) # creates an array containing the values
+                self.R_num.extend(np.array([int(len(sens.measurements.values())*sens.vec_length/len(sens.R_params)) * [sens.R_params]]).flatten()) # creates an array containing the values
                 # for the R matrix based on the sensor values\
                 # TODO: REMOVE THE LIBRARY NAMES TO MAKE THE R MATRIX
 
@@ -248,7 +248,7 @@ class NavModule(object):
         Generates the UKF based on the starting conditions. The sigma points have not been
         :return:
         """
-        self.sigpoints =  MerweScaledSigmaPoints(n=6, alpha=0.0001, beta=2., kappa=-1)
+        self.sigpoints =  MerweScaledSigmaPoints(n=6, alpha=1, beta=2., kappa=-1)
         self.ukf = UKF(dim_x=6, dim_z=1, fx=self.process_func, hx=self.obs_func, dt=self.dt.value,
                   points=self.sigpoints)
         temp = []

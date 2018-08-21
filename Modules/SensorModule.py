@@ -80,7 +80,7 @@ class Spectrometer(Sensor):
         self.type = 'spectrometer'
         self.update_rate = input_params[0]
         self.l_std = input_params[1][0]
-        self.R_params = input_params[1]
+        self.R_params = np.sqrt(input_params[1])
         self.vec_length = 1
         tree = ElementTree.parse(input_params[2])
         xml_tree_root = tree.getroot()
@@ -189,7 +189,7 @@ class AngSensor(Sensor):
         self.r_std = 0#stds[0]
         self.theta_std = input_params[1][0] # std converted from arcseconds!
         self.phi_std = input_params[1][1] # std converted from arcseconds!
-        self.R_params = [input_params[1][0], input_params[1][1]]
+        self.R_params = np.sqrt([input_params[1][0], input_params[1][1]])
         self.r = {}
         self.r_true = {}
         self.theta_true = {}

@@ -7,8 +7,8 @@ ADD TEXT HERE
 '''
 # -------------TIMING ------------------
 # TIMING UNITS MUST BE THE SAME!!
-dt = 1. * u.s  # choice of s, min, hour, day, year
-Simulation_length = 5000. * u.s
+dt = 0.1 * u.s  # choice of s, min, hour, day, year
+Simulation_length = 10000. * u.s
 
 TIMING = [dt, Simulation_length]
 dt_nav = 10. * u.s
@@ -23,7 +23,7 @@ File_Name = 'foo.txt'  # text file should be formatted appropriately TODO
 # If the type kepler is chosen, change the values below:
 a = 7136.635444 * u.km  # semi-major axis [km]
 ecc = 0.1 * u.one# eccentricity [-]
-inc = 0. * u.deg# inclination [deg]
+inc = 50. * u.deg# inclination [deg]
 raan = 0. * u.deg   # Right ascension of the ascending node [deg]
 argp = 0. * u.deg # Argument of perigee [deg]
 nu = 0. * u.deg # True anaomaly [deg]
@@ -38,7 +38,7 @@ ORBITAL = [Orbit_Type, Reference_Body, Reference_Time, kep, state]
 # ----------- SENSORS ----------------
 # format of the the sensor list: [ TYPE, [UPDATE RATE, VARIANCE, LIBRARY]]
 number_sensors = 2
-sensors = [['spectrometer', [10. * u.s, [10.], 'spectrometer_test.xml']],
+sensors = [['spectrometer', [10. * u.s, [1], 'spectrometer_test.xml']],
            ['angle_sensor', [10. * u.s, [4e-6, 4e-6], 'ang_sensor_lib.xml']]]
 
 SENSORS = [number_sensors, sensors]
@@ -48,7 +48,7 @@ SENSORS = [number_sensors, sensors]
 dt_nav = 10.
 starting_uncertanty = [1, 0.1]
 P = np.diag([10**2, 10**2, 10**2, 1**2, 1**2, 1**2])
-q = 0.0001
+q = 0.00001
 # Q = np.diag([0, 0, 0, q, q, q])
 Q = np.multiply(np.array([[dt_nav**3/3, 0, 0, dt_nav**2/2, 0, 0],
      [0, dt_nav**3/3, 0, 0, dt_nav**2/2, 0],
