@@ -1,0 +1,94 @@
+<data>
+
+    <observable name="B1937+21">
+        <attribute name="long" value="57.51" type="float" units="u.deg"/>
+        <attribute name="lat" value="-0.29" type="float" units="u.deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.0016" type="float" units="u.s"/>
+        <attribute name="Sp" value="15.8" type="float" units="mJy"/>
+        <attribute name="Q" value="44.41" type="float" units="dB"/>
+    </observable>
+
+    <observable name="B0329+54">
+        <attribute name="long" value="145.0" type="float" units="u.deg"/>
+        <attribute name="lat" value="-1.22" type="float" units="u.deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.7145" type="float" units="u.s"/>
+        <attribute name="Sp" value="202.8" type="float" units="mJy"/>
+        <attribute name="Q" value="33.74" type="float" units="dB"/>
+    </observable>
+
+    <observable name="B1933+16">
+        <attribute name="long" value="52.44" type="float" units="u.deg"/>
+        <attribute name="lat" value="-2.09" type="float" units="u.deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.3587" type="float" units="u.s"/>
+        <attribute name="Sp" value="42" type="float" units="mJy"/>
+        <attribute name="Q" value="26.54" type="float" units="dB"/>
+    </observable>
+
+    <observable name="B2020+28">
+        <attribute name="long" value="68.86" type="float" units="u.deg"/>
+        <attribute name="lat" value="-4.67" type="float" units="u.deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.3434" type="float" units="u.s"/>
+        <attribute name="Sp" value="37.9" type="float" units="mJy"/>
+        <attribute name="Q" value="23.19" type="float" units="dB"/>
+    </observable>
+
+    <observable name="B1642-03">
+        <attribute name="long" value="14.11" type="float" units="deg"/>
+        <attribute name="lat" value="26.06" type="float" units="deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.3877" type="float" units="u.s"/>
+        <attribute name="Sp" value="21.3" type="float" units="mJy"/>
+        <attribute name="Q" value="22.54" type="float" units="dB"/>
+    </observable>
+
+    <observable name="B0950+08">
+        <attribute name="long" value="228.91" type="float" units="deg"/>
+        <attribute name="lat" value="43.70" type="float" units="deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.2531" type="float" units="u.s"/>
+        <attribute name="Sp" value="85.3" type="float" units="mJy"/>
+        <attribute name="Q" value="22.33" type="float" units="dB"/>
+    </observable>
+
+    <observable name="B1929+10">
+        <attribute name="long" value="47.38" type="float" units="deg"/>
+        <attribute name="lat" value="-3.88" type="float" units="deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.2265" type="float" units="u.s"/>
+        <attribute name="Sp" value="36.0" type="float" units="mJy"/>
+        <attribute name="Q" value="22.02" type="float" units="dB"/>
+    </observable>
+
+    <observable name="B1133+16">
+        <attribute name="long" value="8.56" type="float" units="deg"/>
+        <attribute name="lat" value="0.33" type="float" units="deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="1.1879" type="float" units="u.s"/>
+        <attribute name="Sp" value="31.6" type="float" units="mJy"/>
+        <attribute name="Q" value="18.16" type="float" units="dB"/>
+    </observable>
+
+    <observable name="B0740-28">
+        <attribute name="long" value="243.77" type="float" units="deg"/>
+        <attribute name="lat" value="-2.44" type="float" units="deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.1667" type="float" units="u.s"/>
+        <attribute name="Sp" value="14.9" type="float" units="mJy"/>
+        <attribute name="Q" value="17.79" type="float" units="dB"/>
+    </observable>
+
+    <observable name="B1749-28">
+        <attribute name="long" value="1.54" type="float" units="deg"/>
+        <attribute name="lat" value="-0.96" type="float" units="deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.5625" type="float" units="u.s"/>
+        <attribute name="Sp" value="17.9" type="float" units="mJy"/>
+        <attribute name="Q" value="17.48" type="float" units="dB"/>
+    </observable>
+
+
+</data>

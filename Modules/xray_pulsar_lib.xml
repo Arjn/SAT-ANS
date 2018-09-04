@@ -1,0 +1,113 @@
+<data>
+    <observable name="B0531+21">
+        <attribute name="long" value="184.56" type="float" units="u.deg"/>
+        <attribute name="lat" value="-5.78" type="float" units="u.deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.033" type="float" units="u.s"/>
+        <attribute name="Fx" value="9.93e-9" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="2.09e-7" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.7" type="int" units="-"/>
+    </observable>
+
+    <observable name="B1937+21">
+        <attribute name="long" value="57.51" type="float" units="u.deg"/>
+        <attribute name="lat" value="-0.29" type="float" units="u.deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.0016" type="float" units="u.s"/>
+        <attribute name="Fx" value="3.7e-13" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="3.064e-12" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.86" type="int" units="-"/>
+    </observable>
+
+    <observable name="B1821-24">
+        <attribute name="long" value="7.8" type="float" units="u.deg"/>
+        <attribute name="lat" value="-5.58" type="float" units="u.deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.0031" type="float" units="u.s"/>
+        <attribute name="Fx" value="1.25e-12" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="2.29e-12" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.98" type="int" units="-"/>
+    </observable>
+
+    <observable name="J0218+4232">
+        <attribute name="long" value="139.51" type="float" units="u.deg"/>
+        <attribute name="lat" value="-17.53" type="float" units="u.deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.00232" type="float" units="u.s"/>
+        <attribute name="Fx" value="4.1e-13" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="1e-12" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.73" type="int" units="-"/>
+    </observable>
+
+    <observable name="J0030+0451">
+        <attribute name="long" value="113.14" type="float" units="u.deg"/>
+        <attribute name="lat" value="-57.61" type="float" units="u.deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.00486" type="float" units="u.s"/>
+        <attribute name="Fx" value="1.27e-13" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="1.316-13" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.69" type="int" units="-"/>
+    </observable>
+
+    <observable name="J1012+5307">
+        <attribute name="long" value="160.35" type="float" units="deg"/>
+        <attribute name="lat" value="50.86" type="float" units="deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.00525" type="float" units="u.s"/>
+        <attribute name="Fx" value="1.25e-14" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="5.43e-14" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.75" type="int" units="-"/>
+    </observable>
+
+    <observable name="J0437-4715">
+        <attribute name="long" value="253.39" type="float" units="deg"/>
+        <attribute name="lat" value="-41.96" type="float" units="deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.00575" type="float" units="u.s"/>
+        <attribute name="Fx" value="4.3e-13" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="9.42e-13" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.26" type="int" units="-"/>
+    </observable>
+
+    <observable name="J2124-3358">
+        <attribute name="long" value="10.93" type="float" units="deg"/>
+        <attribute name="lat" value="-45.44" type="float" units="deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.00493" type="float" units="u.s"/>
+        <attribute name="Fx" value="8.26e-14" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="2.23e-13" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.33" type="int" units="-"/>
+    </observable>
+
+    <observable name="J2214+3000">
+        <attribute name="long" value="86.86" type="float" units="deg"/>
+        <attribute name="lat" value="-21.67" type="float" units="deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.00311" type="float" units="u.s"/>
+        <attribute name="Fx" value="4.365e-14" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="3.92e-13" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.72" type="int" units="-"/>
+    </observable>
+
+    <observable name="J0751+1807">
+        <attribute name="long" value="202.73" type="float" units="deg"/>
+        <attribute name="lat" value="21.09" type="float" units="deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.00347" type="float" units="u.s"/>
+        <attribute name="Fx" value="4.29e-14" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="3.92e-13" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.7" type="int" units="-"/>
+    </observable>
+
+    <observable name="J1024-0719">
+        <attribute name="long" value="251.70" type="float" units="deg"/>
+        <attribute name="lat" value="40.52" type="float" units="deg"/>
+        <attribute name="dist" value="0" type="float" units="kpc"/>
+        <attribute name="P" value="0.00516" type="float" units="u.s"/>
+        <attribute name="Fx" value="8.86e-15" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="1.18e-13" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.52" type="int" units="-"/>
+    </observable>
+
+
+</data>
