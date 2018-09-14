@@ -243,6 +243,9 @@ class UKF(object):
         self.z_mean = z_mean_fn
         self.log_likelihood = 0.0
         self.R_store = []
+        self.y_store = []
+        self.z_store = []
+        self.zp_store = []
 
         if sqrt_fn is None:
             self.msqrt = cholesky
@@ -314,7 +317,7 @@ class UKF(object):
                             self.x_mean, self.residual_x)
 
 
-    def update(self, z, num_measurements, R=None, UT=None, hx_args=()):
+    def update(self, z, num_measurements, R=None, UT=None, clock=None, hx_args=()):
         """ Update the UKF with the given measurements. On return,
         self.x and self.P contain the new mean and covariance of the filter.
 
@@ -380,7 +383,7 @@ class UKF(object):
             for i in range(self._num_sigmas): # runs through the sigmas
                 sig_h_temp = []
                 for func in self.hx: # runs through the functions belonging to the different sensors
-                    temp =list(func(self.sigmas_f[i], derivs=True).values())
+                    temp =list(func(self.sigmas_f[i], derivs=True, epoch=clock).values())
                     if type(temp[0]) is np.ndarray:
                         func_output_temp = flatten(temp)
                     else:
@@ -419,13 +422,17 @@ class UKF(object):
                 j += num_measurements[q]
                 q +=1
             self.y = np.array(self.y)
+            self.y_store.append(self.y)
+            self.z_store.append(z)
+            self.zp_store.append(zp)
+
             self.x += dot(self.K, self.y)
             self.P = self.P - dot(self.K, Pz).dot(self.K.T)
 
             I = dot(inv(self.P), Pxz).dot(inv(R)).dot(Pxz.T).dot(inv(self.P))
             #print(np.diag(I))
 
-            self.log_likelihood = logpdf(self.y, np.zeros(len(self.y)), Pz)
+            # self.log_likelihood = logpdf(self.y, np.zeros(len(self.y)), Pz)
 
 
     def cross_variance(self, x, z, sigmas_f, sigmas_h):

@@ -1,21 +1,17 @@
 from Filter import MerweScaledSigmaPoints, UKF
-from numpy.random import randn
 import numpy as np
 import matplotlib.pyplot as plt
-import decimal
 from astropy import units as u
 from poliastro import constants
-import math
-from mpl_toolkits.mplot3d import Axes3D
-
-#cmap = plt.cm.get_cmap('Paired')
+import ClockModule
+import doctest
 
 
 class NavModule(object):
     """
     Holds the navigation components, pertaining to the filter
     """
-    def __init__(self, update_rate, number_sensors, Sensor_objects, starting_conds, random_seed):
+    def __init__(self, update_rate, number_sensors, Sensor_objects, starting_conds, clock_params, random_seed):
         """
         ADD TEXT HERE
         :param update_rate:
@@ -31,57 +27,78 @@ class NavModule(object):
         self.sensors = Sensor_objects
         self.start_conds = starting_conds #[orbital body, start_state, filter]
         self.covar_store = []
-        if starting_conds[0] is 'Sun':
+        self.time = []
+        if starting_conds[0] is 'sun':
             self.mu = constants.GM_sun
-        elif starting_conds[0] is 'Earth':
+        elif starting_conds[0] is 'earth':
             self.mu = constants.GM_earth
-        elif starting_conds[0] is 'Mars':
+        elif starting_conds[0] is 'mars':
             self.mu = constants.GM_mars
         else:
             raise NameError(starting_conds[0])
+
+        self.clock_add_noise = clock_params[2]
+        self.clock = ClockModule.ClockModel(clock_params[0], clock_params[1], seed=random_seed)
+        self.time_storage = []
 
         # make sure mu is in the right units - use the distance unit of start state, and time unit from timing
         dist_unit = starting_conds[1][0][1].unit ** 3
         inv_time_unit = (starting_conds[1][1][1].unit/starting_conds[1][0][1].unit) ** 2
         self.mu = self.mu.to(dist_unit * inv_time_unit)
 
-    def process_func(self, x, t):
-        # contains the process model for the s/c - currently only the 2-body problem
-        y = np.zeros(6)
-        r = np.sqrt(x[0]**2 + x[1]**2 + x[2]**2)
-        y[3] = x[3] - (self.mu.value*x[0]/(r**3) * t)
-        y[4] = x[4] - (self.mu.value*x[1]/(r**3) * t)
-        y[5] = x[5] - (self.mu.value*x[2]/(r**3) * t)
-        y[0] = x[0] + (x[3] * t)
-        y[1] = x[1] + (x[4] * t)
-        y[2] = x[2] + (x[5] * t)
-        return(y)
+    def update_clock(self, dt):
+        # Add noise model for the clock
+        if self.clock_add_noise:
+            self.clock.update_time(dt.to(u.s).value)
+            self.time += dt + self.clock.state[0] * dt.unit
+        else:
+            self.time += dt
+        self.time_storage.append(self.time)
 
-    # def process_func(self, x, h):
+    # def process_func(self, x, t):
+    #     """"
+    #     Process for the dynamics used in the navigation filter
+    #
+    #     >>> Test.process_func(np.array([100,100,100,10,10,10]), 10).astype(int)
+    #     array([      200,       200,       200, -25540511, -25540511, -25540511])
+    #
     #     """
-    #     Holds the orbital propagation equations -  a RK4 method is used
-    #     :param x: (estimated) state
-    #     :param h: time step
-    #     :return: new state
-    #     """
-    #     y0_ = x[0:3]
-    #     k1 = np.multiply(h, self.derivs(y0_))
-    #     k2 = np.multiply(h, self.derivs(y0_ + k1 / 2))
-    #     k3 = np.multiply(h, self.derivs(y0_ + k2 / 2))
-    #     k4 = np.multiply(h, self.derivs(y0_ + k3))
-    #     v_y = x[3:6] + np.divide((k1 + np.multiply(2, k2) + np.multiply(2, k3) + k4), 6)
-    #     y = y0_ + v_y * h
-    #     out = np.array([y, v_y])
+    #     # contains the process model for the s/c - currently only the 2-body problem
+    #     y = np.zeros(6)
+    #     r = np.sqrt(x[0]**2 + x[1]**2 + x[2]**2)
+    #     y[3] = x[3] - (self.mu.value*x[0]/(r**3) * t)
+    #     y[4] = x[4] - (self.mu.value*x[1]/(r**3) * t)
+    #     y[5] = x[5] - (self.mu.value*x[2]/(r**3) * t)
+    #     y[0] = x[0] + (x[3] * t)
+    #     y[1] = x[1] + (x[4] * t)
+    #     y[2] = x[2] + (x[5] * t)
+    #     return(y)
+
+    def process_func(self, x, h):
+        """
+        Holds the orbital propagation equations -  a RK4 method is used
+        :param x: (estimated) state
+        :param h: time step
+        :return: new state
+        """
+        y0_ = x[0:3]
+        k1 = np.multiply(h, self.derivs(y0_))
+        k2 = np.multiply(h, self.derivs(y0_ + k1 / 2))
+        k3 = np.multiply(h, self.derivs(y0_ + k2 / 2))
+        k4 = np.multiply(h, self.derivs(y0_ + k3))
+        v_y = x[3:6] + np.divide((k1 + np.multiply(2, k2) + np.multiply(2, k3) + k4), 6)
+        y = y0_ + v_y * h
+        out = np.array([y, v_y])
+
+        return out.flatten()
     #
-    #     return out.flatten()
-    #
-    # def derivs(self, x):
-    #     r = np.sqrt(x[0] ** 2 + x[1] ** 2 + x[2] ** 2)
-    #     dvx = - self.mu.value * x[0] / (r ** 3)
-    #     dvy = - self.mu.value * x[1] / (r ** 3)
-    #     dvz = - self.mu.value * x[2] / (r ** 3)
-    #
-    #     return np.array([dvx, dvy, dvz])
+    def derivs(self, x):
+        r = np.sqrt(x[0] ** 2 + x[1] ** 2 + x[2] ** 2)
+        dvx = - self.mu.value * x[0] / (r ** 3)
+        dvy = - self.mu.value * x[1] / (r ** 3)
+        dvz = - self.mu.value * x[2] / (r ** 3)
+
+        return np.array([dvx, dvy, dvz])
 
     # def keplar2cartes(mu, RA, inc, AP, a, e, M, i):
     #
@@ -230,7 +247,7 @@ class NavModule(object):
         self.all_measurements = []
         self.residual_h = []
         self.z_mean = []
-        self.R_num = []
+        self.R_params = []
         for sens in sensors:
             if sens.measurement_ready:
                 self.h_func.append(sens.h) # holds the observation equations
@@ -238,7 +255,7 @@ class NavModule(object):
                 self.residual_h.append(sens.residual_h)
                 self.z_mean.append(sens.z_mean)
                 self.num_obs.append(len(sens.measurements.values())*sens.vec_length)
-                self.R_num.extend(np.array([int(len(sens.measurements.values())*sens.vec_length/len(sens.R_params)) * [sens.R_params]]).flatten()) # creates an array containing the values
+                self.R_params.extend(np.array(sens.R_params).flatten()) # creates an array containing the values
                 # for the R matrix based on the sensor values\
                 # TODO: REMOVE THE LIBRARY NAMES TO MAKE THE R MATRIX
 
@@ -248,7 +265,7 @@ class NavModule(object):
         Generates the UKF based on the starting conditions. The sigma points have not been
         :return:
         """
-        self.sigpoints =  MerweScaledSigmaPoints(n=6, alpha=1, beta=2., kappa=-1)
+        self.sigpoints =  MerweScaledSigmaPoints(n=6, alpha=1, beta=2., kappa=0)
         self.ukf = UKF(dim_x=6, dim_z=1, fx=self.process_func, hx=self.obs_func, dt=self.dt.value,
                   points=self.sigpoints)
         temp = []
@@ -265,14 +282,14 @@ class NavModule(object):
         """
         self.ukf.residual_x = None
         self.ukf.dim_z = sum(self.num_obs) # total number of observations per sensor, summed
-        self.ukf.R = np.diag(np.array(self.R_num))
+        self.ukf.R = np.diag(np.array(self.R_params))
         self.ukf.hx = self.h_func
         self.ukf.residual_z = self.residual_h
         self.ukf.z_mean = self.z_mean
         self.ukf.residual_x = np.subtract
         # print('num measurements = %d' % self.ukf.dim_z)
         self.ukf.predict()
-        self.ukf.update(self.all_measurements, self.num_obs) if update is True else None
+        self.ukf.update(self.all_measurements, self.num_obs, clock=self.time) if update is True else None
         self.filter_state = self.ukf.x
         diag_elem = np.diag(self.ukf.P)
         self.covar_store.append(np.array([i for i in diag_elem]))
@@ -307,4 +324,7 @@ def h_observer(x, marks):
     return np.array(estimated_obs_angles)
 
 
-print(h_observer.__doc__)
+if __name__ == "__main__":
+    doctest.testmod(extraglobs={'Test': NavModule(10*u.s, 0, [], ['Sun', [[418.92428299, 74.17981514, -9167.91088469] * u.km,
+                                                                          [-8.47776753, -2.5416425 , -3.28798827] *(u.km/u.s)],
+                                                                  [0], [0]], 200)})

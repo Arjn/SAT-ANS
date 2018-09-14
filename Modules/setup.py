@@ -2,66 +2,116 @@ import main
 import numpy as np
 from astropy import units as u
 from numpy.random import randint
-'''
-ADD TEXT HERE
-'''
+"""
+SAT-ANS: Spacecraft Analysis Tool for Autonomous Navigation and Sizing
+
+Author: Arjen Jongschaap
+
+This tool assesses the navigation performance of selected sensors with navigation filter in a user defined s/c
+trajectory.
+
+To date the following has been implemented:
+Orbit
+    Keplerian orbit around Earth, Mars or Sun
+    
+Navigation
+    UKF filter
+    
+Sensors
+    Angle sensor
+    Spectrometer
+    Radio Pulsar Sensor
+    X-ray Pulsar Sensor  
+"""
+
+
 # -------------TIMING ------------------
+
 # TIMING UNITS MUST BE THE SAME!!
-dt = 0.1 * u.s  # choice of s, min, hour, day, year
-Simulation_length = 10000. * u.s
+dt = 10. * u.s  # choice of s, min, hour, day, year
+Simulation_length = 200000. * u.s
 
 TIMING = [dt, Simulation_length]
-dt_nav = 10. * u.s
+
 # ------------ ORBITAL -------------------
+
 Orbit_Type = 'kepler'  # 'kepler' 'position_velocity' 'ephemeris'
-Reference_Body = 'Earth'  # Éarth, Mars, SSB(NEED to add)
-Reference_Time = ["2013-03-18 12:00", 'utc']  # start epoch, timing reference]
+Reference_Body = 'earth'  # earth, mars, sun
+Reference_Time = ["2018-01-01 00:00", 'tdb', 'iso']  # start epoch, timing reference, format]
 
 # If using an ephemeris, link to file
 File_Name = 'foo.txt'  # text file should be formatted appropriately TODO
 
 # If the type kepler is chosen, change the values below:
 a = 7136.635444 * u.km  # semi-major axis [km]
-ecc = 0.1 * u.one# eccentricity [-]
-inc = 50. * u.deg# inclination [deg]
-raan = 0. * u.deg   # Right ascension of the ascending node [deg]
-argp = 0. * u.deg # Argument of perigee [deg]
-nu = 0. * u.deg # True anaomaly [deg]
+ecc = 0.3 * u.one# eccentricity [-]
+inc = 90. * u.deg# inclination [deg]
+raan = 175. * u.deg   # Right ascension of the ascending node [deg]
+argp = 90. * u.deg # Argument of perigee [deg]
+nu = 178. * u.deg # True anaomaly [deg]
 kep = [a, ecc, inc, raan, argp, nu]
 
 # if the type is position_velocity, need the position and velocity at starting
 # epoch
 state = [-6045 * u.km, -3490 * u.km, 2500 * u.km, -3.457 * u.km/u.s, 6.618 * u.km/u.s, 2.533 * u.km/u.s]  # position then velocity
 
-ORBITAL = [Orbit_Type, Reference_Body, Reference_Time, kep, state]
+orbit_q = 1e-5
 
-# ----------- SENSORS ----------------
+ORBITAL = [Orbit_Type, Reference_Body, Reference_Time, kep, state, orbit_q]
+
+# -------------------- SENSORS ----------------
+
 # format of the the sensor list: [ TYPE, [UPDATE RATE, VARIANCE, LIBRARY]]
-number_sensors = 2
-sensors = [['spectrometer', [10. * u.s, [1], 'spectrometer_test.xml']],
-           ['angle_sensor', [10. * u.s, [4e-6, 4e-6], 'ang_sensor_lib.xml']]]
+
+# Spectrometer variance is error in measurement of spectrum (wavelength)
+spectrometer = ['spectrometer', [10. * u.s, [0.01], 'spectrometer_test.xml']]
+
+# Angle variance is error in measurement of theta and phi
+angle_sensor = ['angle_sensor', [10. * u.s, [4e-7, 4e-7], 'ang_sensor_lib.xml']]
+
+# Sizing parameters for RPNAV:
+
+alpha = 0.5 # - polarization parameter [-]
+Ae = 100    # - Effective detection area [m^2]
+v_rec = 1.4 # - receiver central frequency [GHz]
+B = 400e6   # - Bandwidth [Hz]
+atten = -40 # - main sidelobe attenuation [dB]
+T_rec = 15  # - Receiver noise temperature [K]
+update_rate = 10000 * u.s
+
+radio_PNAV = ['radio_pulsar', [update_rate, alpha, Ae, v_rec, B, atten, T_rec], 'radio_pulsar_lib.xml']
+
+# Sizing parameters for XPNAV:
+
+A = 100**2    # - Detector area [cm^2]
+update_rate = 10000 * u.s
+
+xray_PNAV = ['xray_pulsar', [update_rate, A], 'xray_pulsar_lib.xml']
+
+
+
+number_sensors = 1
+sensors = [spectrometer]
 
 SENSORS = [number_sensors, sensors]
 
 
 # ----------- NAVIGATION ----------------
-dt_nav = 10.
-starting_uncertanty = [1, 0.1]
-P = np.diag([10**2, 10**2, 10**2, 1**2, 1**2, 1**2])
-q = 0.00001
-# Q = np.diag([0, 0, 0, q, q, q])
-Q = np.multiply(np.array([[dt_nav**3/3, 0, 0, dt_nav**2/2, 0, 0],
-     [0, dt_nav**3/3, 0, 0, dt_nav**2/2, 0],
-     [0, 0, dt_nav**3/3, 0, 0, dt_nav**2/2],
-     [dt_nav**2/2, 0, 0, dt_nav, 0, 0],
-     [0, dt_nav**2/2, 0, 0, dt_nav, 0],
-     [0, 0, dt_nav**2/2, 0, 0, dt_nav]]),q)
+starting_uncertanty = [10., 1.]
+P = np.diag([10.**2, 10.**2, 10.**2, 1.**2, 1.**2, 1.**2])
+nav_q = 1e-2 # white noise spectral density
+dt_nav = 100. * u.s
+random_seed = 20000
+NAVIGATION = [dt_nav, P, nav_q, starting_uncertanty, random_seed]
 
-dt_nav = 10. * u.s
-#np.diag([1e-1, 1e-1, 1e-1, 5e-2, 5e-2, 5e-2])
-random_seed = randint(400)
-seedling = 100
-NAVIGATION = [dt_nav, P, Q, starting_uncertanty, random_seed]
+# ------------ON-BOARD CLOCK---------------
+# note that the clock state determines the error in the time
+# clock state = [error, error drift, drift rate]
+initial_state = [3e-6, 3e-11, 6e-18]
+noise_spectra = [1.11e-8, 2.22e-12, 6.66e-18]
+add_noise = False
+ONBOARD_CLOCK = [initial_state, noise_spectra, add_noise]
+
 # [orbital body, timing, start_state, filter]
 
 # MSEs_V = []
@@ -70,9 +120,11 @@ NAVIGATION = [dt_nav, P, Q, starting_uncertanty, random_seed]
 # print(i)
 # random_seed = randint(low=1, high=3000, size=1)
 
-
-sim = main.Main(TIMING, ORBITAL, SENSORS, NAVIGATION)
-sim.run_simulation()
+if __name__ == "__main__":
+     import doctest
+     doctest.testmod()
+     sim = main.Main(TIMING, ORBITAL, SENSORS, NAVIGATION, ONBOARD_CLOCK)
+     sim.run_simulation()
 
 #     MSEs_V.append(sim.MSE_V)
 #     MSEs_P.append(sim.MSE_P)
