@@ -153,7 +153,7 @@ class Spectrometer(Sensor):
                     'direction']  # SURELY ONLY REQUIRED IF DISTANCES ARE CONSIDERED??
             else:
                 dot_prod = np.dot(x[3:6], self.observables_SCframe[key]['direction'])
-                self.observed_wavelength[key] = (1 + dot_prod / (c.value/1000)) * self.lib_params[key][
+                self.observed_wavelength[key] = 1/(1 + dot_prod / (c.value/1000)) * self.lib_params[key][
                     'base_wavelength_nm']  # Doppler equation scaled to nanometer wavelength
                 if derivs: self.derivs.append(self.dhdx(self.observables_SCframe[key]['direction'], self.lib_params[key][
                     'base_wavelength_nm']))
@@ -168,7 +168,7 @@ class Spectrometer(Sensor):
         :param wavelength: base wavelength of the object
         :return: the derivative (velocity only - position is zero) wrt the state
         """
-        temp = direction*(wavelength/(c.value/1000))
+        temp = direction*((1/wavelength)/(c.value/1000))
         return np.array([0,0,0, temp[0], temp[1], temp[2]])
 
 
@@ -204,8 +204,8 @@ class Spectrometer(Sensor):
                     dot_prod = np.dot(state[3:6], self.observables_SCframe[key]['direction'])
                     # self.derivs.append(self.dhdx(self.observables_SCframe[key]['direction'],  self.lib_params[key][
                     #     'base_wavelength_nm']))
-                    self.observed_wavelength[key] = ((1 + dot_prod / (c.value/1000)) * self.lib_params[key][
-                        'base_wavelength_nm']) + np.random.normal(0, self.l_std)  # Doppler equation scaled to nanometer wavelength
+                    self.observed_wavelength[key] = 1/(1 + dot_prod / (c.value/1000)) * self.lib_params[key][
+                        'base_wavelength_nm'] + np.random.normal(0, self.l_std)  # Doppler equation scaled to nanometer wavelength
                     self.R_params.append(self.l_std**2)
             # self.derivs = np.array(self.derivs)
             self.measurement_ready = True
@@ -415,7 +415,7 @@ class AngSensor(Sensor):
                                 np.mod(float(self.phi[key]), 2 * np.pi) * self.angle_scaler])
 
                 self.measurements[key] = mix
-                self.R_params.append([self.theta_std[1][0]**2, self.phi_std[1][1]**2])
+                self.R_params.append([self.theta_std**2, self.phi_std**2])
             # for i in range(0, len(self.r_true),2):
             #     self.storage_theta[i].append(self.measure[i])
             #     self.storage_phi[i].append(self.measure[i+1])

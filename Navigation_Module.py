@@ -265,7 +265,7 @@ class NavModule(object):
         Generates the UKF based on the starting conditions. The sigma points have not been
         :return:
         """
-        self.sigpoints =  MerweScaledSigmaPoints(n=6, alpha=1, beta=2., kappa=-2)
+        self.sigpoints =  MerweScaledSigmaPoints(n=6, alpha=0.001, beta=2., kappa=-2)
         self.ukf = UKF(dim_x=6, dim_z=1, fx=self.process_func, hx=self.obs_func, dt=self.dt.value,
                   points=self.sigpoints)
         temp = []

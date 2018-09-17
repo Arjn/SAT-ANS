@@ -1,6 +1,7 @@
 import main
 import numpy as np
 from astropy import units as u
+import matplotlib.pyplot as plt
 from numpy.random import randint
 """
 SAT-ANS: Spacecraft Analysis Tool for Autonomous Navigation and Sizing
@@ -29,7 +30,7 @@ Sensors
 
 # TIMING UNITS MUST BE THE SAME!!
 dt = 10. * u.s  # choice of s, min, hour, day, year
-Simulation_length = 500000. * u.s
+Simulation_length = 20000. * u.s
 
 TIMING = [dt, Simulation_length]
 
@@ -55,17 +56,19 @@ kep = [a, ecc, inc, raan, argp, nu]
 # epoch
 state = [-6045 * u.km, -3490 * u.km, 2500 * u.km, -3.457 * u.km/u.s, 6.618 * u.km/u.s, 2.533 * u.km/u.s]  # position then velocity
 
-ORBITAL = [Orbit_Type, Reference_Body, Reference_Time, kep, state]
+orbit_q = 1e-5
+
+ORBITAL = [Orbit_Type, Reference_Body, Reference_Time, kep, state, orbit_q]
 
 # -------------------- SENSORS ----------------
 
 # format of the the sensor list: [ TYPE, [UPDATE RATE, VARIANCE, LIBRARY]]
 
 # Spectrometer variance is error in measurement of spectrum (wavelength)
-spectrometer = ['spectrometer', [1000. * u.s, [0.1], 'spectrometer_test.xml']]
+spectrometer = ['spectrometer', [10. * u.s, [1e-10], 'spectrometer_test.xml']]
 
 # Angle variance is error in measurement of theta and phi
-angle_sensor = ['angle_sensor', [100. * u.s, [4e-9, 4e-9], 'ang_sensor_lib.xml']]
+angle_sensor = ['angle_sensor', [10. * u.s, [4e-7, 4e-7], 'ang_sensor_lib.xml']]
 
 # Sizing parameters for RPNAV:
 
@@ -95,12 +98,12 @@ SENSORS = [number_sensors, sensors]
 
 
 # ----------- NAVIGATION ----------------
-starting_uncertanty = [10, 1]
-P = np.diag([1**2, 1**2, 1**2, 0.1**2, 0.1**2, 0.1**2])
-q = 1e-7 # white noise spectral density
-dt_nav = 100. * u.s
-random_seed = 20000
-NAVIGATION = [dt_nav, P, q, starting_uncertanty, random_seed]
+starting_uncertanty = [10., 1.]
+P = np.diag([100.**2, 100.**2, 100.**2, 10.**2, 10.**2, 10.**2])
+nav_q = 1e-4 # white noise spectral density
+dt_nav = 10. * u.s
+random_seed = 2000
+NAVIGATION = [dt_nav, P, nav_q, starting_uncertanty, random_seed]
 
 # ------------ON-BOARD CLOCK---------------
 # note that the clock state determines the error in the time

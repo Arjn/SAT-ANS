@@ -4,7 +4,7 @@
             <!--<attribute name="direction.y" value="0.0" type="float"/>-->
             <!--<attribute name="direction.z" value="0.0" type="float"/>-->
             <!--<attribute name="range_m" value="3e15" type="float"/>-->
-            <!--<attribute name="base_wavelength_nm" value="500" type="float"/>-->
+            <!--<attribute name="base_wavelength_nm" value="500e-9" type="float"/>-->
             <!--<attribute name="parallax" value="0" type="int"/>-->
         <!--</observable>-->
 
@@ -13,7 +13,7 @@
             <attribute name="direction.y" value="0.0" type="float"/>
             <attribute name="direction.z" value="0.0" type="float"/>
             <attribute name="range_m" value="3e15" type="float"/>
-            <attribute name="base_wavelength_nm" value="500" type="float"/>
+            <attribute name="base_wavelength_nm" value="5000e-9" type="float"/>
             <attribute name="parallax" value="0" type="int"/>
         </observable>
 
@@ -22,7 +22,7 @@
             <!--<attribute name="direction.y" value="1." type="float"/>-->
             <!--<attribute name="direction.z" value="0.0" type="float"/>-->
             <!--<attribute name="range_m" value="3e15" type="float"/>-->
-            <!--<attribute name="base_wavelength_nm" value="600" type="float"/>-->
+            <!--<attribute name="base_wavelength_nm" value="600e-9" type="float"/>-->
             <!--<attribute name="parallax" value="0" type="int"/>-->
         <!--</observable>-->
 
@@ -31,7 +31,7 @@
             <attribute name="direction.y" value="0.0" type="float"/>
             <attribute name="direction.z" value="1." type="float"/>
             <attribute name="range_m" value="3e12" type="float"/>
-            <attribute name="base_wavelength_nm" value="800" type="float"/>
+            <attribute name="base_wavelength_nm" value="8000e-9" type="float"/>
             <attribute name="parallax" value="0" type="int"/>
         </observable>
 
@@ -40,7 +40,7 @@
             <!--<attribute name="direction.y" value="-0.5" type="float"/>-->
             <!--<attribute name="direction.z" value="-0.5" type="float"/>-->
             <!--<attribute name="range_m" value="3e15" type="float"/>-->
-            <!--<attribute name="base_wavelength_nm" value="400" type="float"/>-->
+            <!--<attribute name="base_wavelength_nm" value="400e-9" type="float"/>-->
             <!--<attribute name="parallax" value="0" type="int"/>-->
         <!--</observable>-->
 </data>
