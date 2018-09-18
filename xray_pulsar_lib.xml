@@ -1,0 +1,179 @@
+<data>
+    <observable name="B0531+21">
+        <attribute name="long_gal" value="184.56" type="float" units="u.deg"/>
+        <attribute name="lat_gal" value="-5.78" type="float" units="u.deg"/>
+        <attribute name="long_ICRS" value="83.639" type="float" units="u.deg"/>
+        <attribute name="lat_ICRS" value="22.015" type="float" units="u.deg"/>
+        <attribute name="ang_error" value="9.528e-7" type="float" units="u.deg"/>
+        <attribute name="dist" value="2.0" type="float" units="kpc"/>
+        <attribute name="P" value="0.033" type="float" units="u.s"/>
+        <attribute name="Fx" value="9.93e-9" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="2.09e-7" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.7" type="float" units="-"/>
+        <attribute name="puls_width" value="1.7e-3" type="float" units="s"/>
+        <attribute name="ref_phase" value="0" type="float" units="-"/>
+        <attribute name="phase" value="0" type="float" units="-"/>
+    </observable>
+
+    <observable name="B1937+21">
+        <attribute name="long_gal" value="57.51" type="float" units="u.deg"/>
+        <attribute name="lat_gal" value="-0.29" type="float" units="u.deg"/>
+        <attribute name="long_ICRS" value="294.912" type="float" units="u.deg"/>
+        <attribute name="lat_ICRS" value="21.584" type="float" units="u.deg"/>
+        <attribute name="ang_error" value="1.11e-8" type="float" units="u.deg"/>
+        <attribute name="dist" value="3.5" type="float" units="kpc"/>
+        <attribute name="P" value="0.0016" type="float" units="u.s"/>
+        <attribute name="Fx" value="3.7e-13" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="3.064e-12" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.86" type="float" units="-"/>
+        <attribute name="puls_width" value="2.1e-5" type="float" units="s"/>
+        <attribute name="ref_phase" value="0" type="float" units="-"/>
+        <attribute name="phase" value="0" type="float" units="-"/>
+    </observable>
+
+    <observable name="B1821-24">
+        <attribute name="long_gal" value="7.8" type="float" units="u.deg"/>
+        <attribute name="lat_gal" value="-5.58" type="float" units="u.deg"/>
+        <attribute name="long_ICRS" value="276.137" type="float" units="u.deg"/>
+        <attribute name="lat_ICRS" value="-24.868" type="float" units="u.deg"/>
+        <attribute name="ang_error" value="1.669e-6" type="float" units="u.deg"/>
+        <attribute name="dist" value="5.1" type="float" units="kpc"/>
+        <attribute name="P" value="0.0031" type="float" units="u.s"/>
+        <attribute name="Fx" value="1.25e-12" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="2.29e-12" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.98" type="float" units="-"/>
+        <attribute name="puls_width" value="5.5e-5" type="float" units="s"/>
+        <attribute name="ref_phase" value="0" type="float" units="-"/>
+        <attribute name="phase" value="0" type="float" units="-"/>
+    </observable>
+
+    <observable name="J0218+4232">
+        <attribute name="long_gal" value="139.51" type="float" units="u.deg"/>
+        <attribute name="lat_gal" value="-17.53" type="float" units="u.deg"/>
+        <attribute name="long_ICRS" value="34.527" type="float" units="u.deg"/>
+        <attribute name="lat_ICRS" value="42.535" type="float" units="u.deg"/>
+        <attribute name="ang_error" value="8.644e-6" type="float" units="u.deg"/>
+        <attribute name="dist" value="3.15" type="float" units="kpc"/>
+        <attribute name="P" value="0.00232" type="float" units="u.s"/>
+        <attribute name="Fx" value="4.1e-13" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="Bx" value="1e-12" type="float" units="erg_s-1_cm-2"/>
+        <attribute name="puls_frac" value="0.73" type="float" units="-"/>
+        <attribute name="puls_width" value="6.9e-4" type="float" units="s"/>
+        <attribute name="ref_phase" value="0" type="float" units="-"/>
+        <attribute name="phase" value="0" type="float" units="-"/>
+    </observable>
+
+    <!--<observable name="J0030+0451">-->
+        <!--<attribute name="long_gal" value="113.14" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_gal" value="-57.61" type="float" units="u.deg"/>-->
+        <!--<attribute name="long_ICRS" value="7.613" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="4.862" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="5.93e-6" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="0.32" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="0.00486" type="float" units="u.s"/>-->
+        <!--<attribute name="Fx" value="1.27e-13" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="Bx" value="1.316e-13" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="puls_frac" value="0.69" type="float" units="-"/>-->
+        <!--<attribute name="puls_width" value="7.31e-4" type="float" units="s"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+    <!--<observable name="J1012+5307">-->
+        <!--<attribute name="long_gal" value="160.35" type="float" units="deg"/>-->
+        <!--<attribute name="lat_gal" value="50.86" type="float" units="deg"/>-->
+        <!--<attribute name="long_ICRS" value="153.141" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="53.115" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="1.33e-7" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="0.7" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="0.00525" type="float" units="u.s"/>-->
+        <!--<attribute name="Fx" value="1.25e-14" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="Bx" value="5.43e-14" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="puls_frac" value="0.75" type="float" units="-"/>-->
+        <!--<attribute name="puls_width" value="6.9e-4" type="float" units="s"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+    <!--<observable name="J0437-4715">-->
+        <!--<attribute name="long_gal" value="253.39" type="float" units="deg"/>-->
+        <!--<attribute name="lat_gal" value="-41.96" type="float" units="deg"/>-->
+        <!--<attribute name="long_ICRS" value="69.322" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="-47.249" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="1.389e-8" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="0.16" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="0.00575" type="float" units="u.s"/>-->
+        <!--<attribute name="Fx" value="4.3e-13" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="Bx" value="9.42e-13" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="puls_frac" value="0.26" type="float" units="-"/>-->
+        <!--<attribute name="puls_width" value="1.41e-4" type="float" units="s"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+    <!--<observable name="J2124-3358">-->
+        <!--<attribute name="long_gal" value="10.93" type="float" units="deg"/>-->
+        <!--<attribute name="lat_gal" value="-45.44" type="float" units="deg"/>-->
+        <!--<attribute name="long_ICRS" value="321.186" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="-33.976" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="2.194e-7" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="0.41" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="0.00493" type="float" units="u.s"/>-->
+        <!--<attribute name="Fx" value="8.26e-14" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="Bx" value="2.23e-13" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="puls_frac" value="0.33" type="float" units="-"/>-->
+        <!--<attribute name="puls_width" value="5.24e-4" type="float" units="s"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+    <!--<observable name="J2214+3000">-->
+        <!--<attribute name="long_gal" value="86.86" type="float" units="deg"/>-->
+        <!--<attribute name="lat_gal" value="-21.67" type="float" units="deg"/>-->
+        <!--<attribute name="long_ICRS" value="333.669" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="30.009" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="0" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="0.6" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="0.00311" type="float" units="u.s"/>-->
+        <!--<attribute name="Fx" value="4.365e-14" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="Bx" value="3.92e-13" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="puls_frac" value="0.72" type="float" units="-"/>-->
+        <!--<attribute name="puls_width" value="3.12e-4" type="float" units="s"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+    <!--<observable name="J0751+1807">-->
+        <!--<attribute name="long_gal" value="202.73" type="float" units="deg"/>-->
+        <!--<attribute name="lat_gal" value="21.09" type="float" units="deg"/>-->
+        <!--<attribute name="long_ICRS" value="117.792" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="18.129" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="2.01e-6" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="1.11" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="0.00347" type="float" units="u.s"/>-->
+        <!--<attribute name="Fx" value="4.29e-14" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="Bx" value="3.92e-13" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="puls_frac" value="0.7" type="float" units="-"/>-->
+        <!--<attribute name="puls_width" value="7.e-4" type="float" units="s"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+    <!--<observable name="J1024-0719">-->
+        <!--<attribute name="long_gal" value="251.70" type="float" units="deg"/>-->
+        <!--<attribute name="lat_gal" value="40.52" type="float" units="deg"/>-->
+        <!--<attribute name="long_ICRS" value="156.163" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="-7.318" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="1.86e-7" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="1.22" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="0.00516" type="float" units="u.s"/>-->
+        <!--<attribute name="Fx" value="8.86e-15" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="Bx" value="1.18e-13" type="float" units="erg_s-1_cm-2"/>-->
+        <!--<attribute name="puls_frac" value="0.52" type="float" units="-"/>-->
+        <!--<attribute name="puls_width" value="2.69e-3" type="float" units="s"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+
+</data>

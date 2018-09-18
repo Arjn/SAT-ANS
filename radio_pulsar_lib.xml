@@ -1,0 +1,154 @@
+<data>
+
+    <observable name="B1937+21">
+        <attribute name="long_gal" value="57.51" type="float" units="u.deg"/>
+        <attribute name="lat_gal" value="-0.29" type="float" units="u.deg"/>
+        <attribute name="long_ICRS" value="294.912" type="float" units="u.deg"/>
+        <attribute name="lat_ICRS" value="-21.584" type="float" units="u.deg"/>
+        <attribute name="ang_error" value="1.11e-8" type="float" units="u.deg"/>
+        <attribute name="dist" value="3.5" type="float" units="kpc"/>
+        <attribute name="P" value="0.0016" type="float" units="u.s"/>
+        <attribute name="Sp" value="15.8" type="float" units="mJy"/>
+        <attribute name="Q" value="44.41" type="float" units="dB"/>
+        <attribute name="ref_freq" value="1e9" type="float" units="Hz"/>
+        <attribute name="ref_phase" value="0" type="float" units="-"/>
+        <attribute name="phase" value="0" type="float" units="-"/>
+    </observable>
+
+    <observable name="B0329+54">
+        <attribute name="long_gal" value="145.0" type="float" units="u.deg"/>
+        <attribute name="lat_gal" value="-1.22" type="float" units="u.deg"/>
+        <attribute name="long_ICRS" value="53.255" type="float" units="u.deg"/>
+        <attribute name="lat_ICRS" value="54.577" type="float" units="u.deg"/>
+        <attribute name="ang_error" value="1.042e-5" type="float" units="u.deg"/>
+        <attribute name="dist" value="1." type="float" units="kpc"/>
+        <attribute name="P" value="0.7145" type="float" units="u.s"/>
+        <attribute name="Sp" value="202.8" type="float" units="mJy"/>
+        <attribute name="Q" value="33.74" type="float" units="dB"/>
+        <attribute name="ref_freq" value="1e9" type="float" units="Hz"/>
+        <attribute name="ref_phase" value="0" type="float" units="-"/>
+        <attribute name="phase" value="0" type="float" units="-"/>
+    </observable>
+
+    <observable name="B1933+16">
+        <attribute name="long_gal" value="52.44" type="float" units="u.deg"/>
+        <attribute name="lat_gal" value="-2.09" type="float" units="u.deg"/>
+        <attribute name="long_ICRS" value="293.949" type="float" units="u.deg"/>
+        <attribute name="lat_ICRS" value="16.283" type="float" units="u.deg"/>
+        <attribute name="ang_error" value="2.917e-7" type="float" units="u.deg"/>
+        <attribute name="dist" value="3.7" type="float" units="kpc"/>
+        <attribute name="P" value="0.3587" type="float" units="u.s"/>
+        <attribute name="Sp" value="42" type="float" units="mJy"/>
+        <attribute name="Q" value="26.54" type="float" units="dB"/>
+        <attribute name="ref_freq" value="1e9" type="float" units="Hz"/>
+        <attribute name="ref_phase" value="0" type="float" units="-"/>
+        <attribute name="phase" value="0" type="float" units="-"/>
+    </observable>
+
+    <observable name="B2020+28">
+        <attribute name="long_gal" value="68.86" type="float" units="u.deg"/>
+        <attribute name="lat_gal" value="-4.67" type="float" units="u.deg"/>
+        <attribute name="long_ICRS" value="305.652" type="float" units="u.deg"/>
+        <attribute name="lat_ICRS" value="28.905" type="float" units="u.deg"/>
+        <attribute name="ang_error" value="1.625e-6" type="float" units="u.deg"/>
+        <attribute name="dist" value="2.1" type="float" units="kpc"/>
+        <attribute name="P" value="0.3434" type="float" units="u.s"/>
+        <attribute name="Sp" value="37.9" type="float" units="mJy"/>
+        <attribute name="Q" value="23.19" type="float" units="dB"/>
+        <attribute name="ref_freq" value="1e9" type="float" units="Hz"/>
+        <attribute name="ref_phase" value="0" type="float" units="-"/>
+        <attribute name="phase" value="0" type="float" units="-"/>
+    </observable>
+
+    <!--<observable name="B1642-03">-->
+        <!--<attribute name="long_gal" value="14.11" type="float" units="deg"/>-->
+        <!--<attribute name="lat_gal" value="26.06" type="float" units="deg"/>-->
+        <!--<attribute name="long_ICRS" value="251.258" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="-3.303" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="4.25e-06" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="1.32" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="0.3877" type="float" units="u.s"/>-->
+        <!--<attribute name="Sp" value="21.3" type="float" units="mJy"/>-->
+        <!--<attribute name="Q" value="22.54" type="float" units="dB"/>-->
+        <!--<attribute name="ref_freq" value="1e9" type="float" units="Hz"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+    <!--<observable name="B0950+08">-->
+        <!--<attribute name="long_gal" value="228.91" type="float" units="deg"/>-->
+        <!--<attribute name="lat_gal" value="43.70" type="float" units="deg"/>-->
+        <!--<attribute name="long_ICRS" value="148.293" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="7.927" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="1.138e-6" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="0.26" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="0.2531" type="float" units="u.s"/>-->
+        <!--<attribute name="Sp" value="85.3" type="float" units="mJy"/>-->
+        <!--<attribute name="Q" value="22.33" type="float" units="dB"/>-->
+        <!--<attribute name="ref_freq" value="1e9" type="float" units="Hz"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+    <!--<observable name="B1929+10">-->
+        <!--<attribute name="long_gal" value="47.38" type="float" units="deg"/>-->
+        <!--<attribute name="lat_gal" value="-3.88" type="float" units="deg"/>-->
+        <!--<attribute name="long_ICRS" value="293.053" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="10.993" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="2.356e-5" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="0.31" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="0.2265" type="float" units="u.s"/>-->
+        <!--<attribute name="Sp" value="36.0" type="float" units="mJy"/>-->
+        <!--<attribute name="Q" value="22.02" type="float" units="dB"/>-->
+        <!--<attribute name="ref_freq" value="1e9" type="float" units="Hz"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+    <!--<observable name="B1133+16">-->
+        <!--<attribute name="long_gal" value="8.56" type="float" units="deg"/>-->
+        <!--<attribute name="lat_gal" value="0.33" type="float" units="deg"/>-->
+        <!--<attribute name="long_ICRS" value="270.879" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="-21.385" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="7.194e-6" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="0.35" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="1.1879" type="float" units="u.s"/>-->
+        <!--<attribute name="Sp" value="31.6" type="float" units="mJy"/>-->
+        <!--<attribute name="Q" value="18.16" type="float" units="dB"/>-->
+        <!--<attribute name="ref_freq" value="1e9" type="float" units="Hz"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+    <!--<observable name="B0740-28">-->
+        <!--<attribute name="long_gal" value="243.77" type="float" units="deg"/>-->
+        <!--<attribute name="lat_gal" value="-2.44" type="float" units="deg"/>-->
+        <!--<attribute name="long_ICRS" value="115.707" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="-28.374" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="5.833e-6" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="2.0" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="0.1667" type="float" units="u.s"/>-->
+        <!--<attribute name="Sp" value="14.9" type="float" units="mJy"/>-->
+        <!--<attribute name="Q" value="17.79" type="float" units="dB"/>-->
+        <!--<attribute name="ref_freq" value="1e9" type="float" units="Hz"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+    <!--<observable name="B1749-28">-->
+        <!--<attribute name="long_gal" value="1.54" type="float" units="deg"/>-->
+        <!--<attribute name="lat_gal" value="-0.96" type="float" units="deg"/>-->
+        <!--<attribute name="long_ICRS" value="268.244" type="float" units="u.deg"/>-->
+        <!--<attribute name="lat_ICRS" value="-28.110" type="float" units="u.deg"/>-->
+        <!--<attribute name="ang_error" value="4.19e-5" type="float" units="u.deg"/>-->
+        <!--<attribute name="dist" value="0.2" type="float" units="kpc"/>-->
+        <!--<attribute name="P" value="0.5625" type="float" units="u.s"/>-->
+        <!--<attribute name="Sp" value="17.9" type="float" units="mJy"/>-->
+        <!--<attribute name="Q" value="17.48" type="float" units="dB"/>-->
+        <!--<attribute name="ref_freq" value="1e9" type="float" units="Hz"/>-->
+        <!--<attribute name="ref_phase" value="0" type="float" units="-"/>-->
+        <!--<attribute name="phase" value="0" type="float" units="-"/>-->
+    <!--</observable>-->
+
+
+</data>
