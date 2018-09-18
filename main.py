@@ -40,7 +40,7 @@ def zero_inv(Q):
     return np.diag([Q[0,0], Q[1,1], Q[2,2], temp[0,0], temp[1,1],temp[2,2]])
 
 class Main(object):
-    def __init__(self, TIMING, ORBITAL, SENSORS, NAVIGATION, ONBOARD_CLOCK):
+    def __init__(self, TIMING, ORBITAL, SENSORS, NAVIGATION, ONBOARD_CLOCK, updates=None):
         """
         :param TIMING: -Generates the timing aspects of the the model
                        -[timestep, simulation length]
@@ -116,7 +116,7 @@ class Main(object):
         self.clock_noise_spect = ONBOARD_CLOCK[1]
         self.clock_add_noise = ONBOARD_CLOCK[2]
 
-
+        self.updates = updates if updates else None
 
 
 
@@ -128,7 +128,7 @@ class Main(object):
         Creates the orbital object and generates the ephemeris for the simulation run
         """
         self.Orbit = OrbitModule.MakeOrbit(self.orbit_type, self.orbit_info, self.ref_body, self.ref_time, self.global_dt
-                                           , self.sim_length, self.nav_Q)
+                                           , self.sim_length, self.orb_Q)
         self.Orbit.makeEphem()
 
     def sensors(self):
@@ -201,10 +201,10 @@ class Main(object):
         F_bar = np.zeros([6,6])
         global_counter = 0
         navigation_counter = 0
-        update = True
+        update = self.updates if self.updates else True
 
         storage_true = []
-        filter_covar = []
+        self.filter_covar = []
         storage_filter = []
         timer_storage = []
         test_storage = []
@@ -252,7 +252,7 @@ class Main(object):
                 self.MSE_P.append(temp)
                 temp = (np.sqrt((self.Orbit.state[3:] - self.nav_module.filter_state[3:])**2))
                 self.MSE_V.append(temp)
-                filter_covar.append(np.diag(self.nav_module.ukf.P))
+                self.filter_covar.append(np.diag(self.nav_module.ukf.P))
                 test_storage.append(temp.tolist())
                 timer_storage.append(self.global_timer.value)
                 storage_true.append(self.Orbit.state)
@@ -269,7 +269,7 @@ class Main(object):
             self.nav_timer = self.global_dt*navigation_counter
 
         storage_filter = np.array(storage_filter)
-        filter_covar = np.array(filter_covar)
+        self.filter_covar = np.array(self.filter_covar)
         timer_storage = np.array(timer_storage)
         storage_true = np.array(storage_true)
         # self.CRLB = np.array(self.CRLB)
@@ -279,9 +279,12 @@ class Main(object):
         self.MSE_P = np.array(self.MSE_P)
         self.MSE_V = np.array(self.MSE_V)
 
-        analysis = AnalysisModule.Analysis(storage_true, storage_filter, filter_covar, timer_storage)
-        analysis.make_graphs()
-        analysis.Fourier_trans()
+        self.analysis = AnalysisModule.Analysis(storage_true, storage_filter, self.filter_covar, timer_storage)
+        # self.analysis.make_graphs()
+        # self.analysis.Fourier_trans('True_pos')
+        # self.analysis.Fourier_trans('Est_pos')
+        # self.analysis.Fourier_trans('Error')
+        self.analysis.find_means()
         plt.show()
 
         # plt.figure(6)
