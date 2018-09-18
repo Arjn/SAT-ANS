@@ -8,6 +8,7 @@ This module is the orbital module for the INAV testbed blah blah blah
 """
 import numpy as np
 import matplotlib.pyplot as plt
+import EphemerisModule
 
 plt.ion()  # To immediately show plots
 
@@ -17,9 +18,10 @@ from poliastro.twobody import Orbit
 from poliastro.twobody.propagation import cowell, kepler
 from poliastro import coordinates
 from astropy.time import Time
-from astropy.coordinates import CartesianRepresentation, get_body_barycentric_posvel, \
-    ICRS, GCRS, CartesianDifferential
+from astropy.coordinates import CartesianRepresentation#, get_body_barycentric_posvel, \
+    #ICRS, GCRS, CartesianDifferential
 from astropy.coordinates import solar_system_ephemeris
+from collections import OrderedDict
 from poliastro.plotting import plot
 from numpy.random import normal
 
@@ -44,6 +46,8 @@ class MakeOrbit(object):
     def __init__(self, in_orbit_type, in_orbit_info, in_ref_body, in_ref_time, in_timestep, in_sim_length, noise):
 
         solar_system_ephemeris.set("de430")
+        self.ref_ephem = "de430"
+
 
         self.orbitType = in_orbit_type
         self.orbitInfo = in_orbit_info
@@ -92,6 +96,19 @@ class MakeOrbit(object):
         #print(self.ephem.epoch.iso)
         #print(self.endEpoch.iso)
 
+        # if isinstance(self.refBody, str):
+        #     # Look up kernel chain for JPL ephemeris, based on name
+        #     try:
+        #         kernel_spec = BODY_NAME_TO_KERNEL_SPEC[self.refBody.lower()]
+        #     except KeyError:
+        #         raise KeyError("{0}'s position cannot be calculated with "
+        #                        "the {1} ephemeris.".format(self.refBody, self.ref_ephem))
+        # else:
+        #     # otherwise, assume the user knows what their doing and intentionally
+        #     # passed in a kernel chain
+        #     kernel_spec = self.refBody
+        self.ephem_kernel = EphemerisModule._get_kernel(self.ref_ephem)
+
     def add_noise(self, r,v):
         """
         Adds zero-mean gaussian noise to the ephemeris state with the user-defined noise parameters
@@ -116,9 +133,24 @@ class MakeOrbit(object):
         v = self.ephem.v.value
         self.state = np.array([r[0], r[1], r[2], v[0], v[1], v[2]])
         # print(self.state)
-        self.barycentric_state = (coordinates.body_centered_to_icrs(self.ephem.r, self.ephem.v, self.refBody, self.ephem.epoch,
-                                               ephemeris='de430'))
+        self.barycentric_state = (EphemerisModule.body_centered_to_icrs(self.ephem.r, self.ephem.v, self.refBody, self.ephem.epoch,
+                                               ephemeris=self.ref_ephem, Ephemkernel=self.ephem_kernel))
         self.simStates.append(self.state)
         return(self.state)
 
 print(__doc__)
+
+BODY_NAME_TO_KERNEL_SPEC = OrderedDict(
+                                      (('sun', [(0, 10)]),
+                                       ('mercury', [(0, 1), (1, 199)]),
+                                       ('venus', [(0, 2), (2, 299)]),
+                                       ('earth-moon-barycenter', [(0, 3)]),
+                                       ('earth', [(0, 3), (3, 399)]),
+                                       ('moon', [(0, 3), (3, 301)]),
+                                       ('mars', [(0, 4)]),
+                                       ('jupiter', [(0, 5)]),
+                                       ('saturn', [(0, 6)]),
+                                       ('uranus', [(0, 7)]),
+                                       ('neptune', [(0, 8)]),
+                                       ('pluto', [(0, 9)]))
+                                      )

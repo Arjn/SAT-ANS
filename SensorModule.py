@@ -15,6 +15,7 @@ from numpy.random import randn
 import xml.etree.cElementTree as ElementTree
 from poliastro import coordinates
 from poliastro.bodies import Earth, Mars, Sun
+import EphemerisModule
 ref_body_mapper = {'sun': Sun, 'earth': Earth, 'mars': Mars}
 
 class Sensor(object):
@@ -27,6 +28,8 @@ class Sensor(object):
         self.internal_clock = 0
         self.FIM = []
         self.sensor_timer_counter = 0
+        self.ref_ephem = "de430"
+        self.ephem_kernel = EphemerisModule._get_kernel(self.ref_ephem)
 
     def residual_h(self, a, b):
         return a-b
@@ -456,11 +459,11 @@ class PulsarSensor(Sensor):
     def state_transform(self, time_ref, state, ref_body):
         #To do the time transform, first need the state in barycentric coords
 
-        self.state_SBB = coordinates.body_centered_to_icrs(state[0:3]*u.km, state[3:]*(u.km/u.s), ref_body_mapper[ref_body], time_ref,
-                                          ephemeris='de430')
+        self.state_SBB = EphemerisModule.body_centered_to_icrs(state[0:3]*u.km, state[3:]*(u.km/u.s), ref_body_mapper[ref_body], time_ref,
+                                           Ephemkernel= self.ephem_kernel)
         self.state_SBB = np.array([self.state_SBB[0].value, self.state_SBB[1].value]).flatten()
         self.pos_SSB = self.state_SBB[0:3]
-        self.sun_pos_SBB = solar_system.get_body_barycentric_posvel('sun', time_ref, ephemeris='de430')
+        self.sun_pos_SBB = EphemerisModule.get_body_barycentric_posvel('sun', time_ref, Ephemkernel= self.ephem_kernel)
         self.sun_pos_SBB = self.sun_pos_SBB[0].xyz.value
 
     def time_transform(self, sim_time, mu):

@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import pickle as pkl
 import time
 from tqdm import tqdm
+import cProfile
+from profilestats import profile
 
 """
 SAT-ANS: Spacecraft Analysis Tool for Autonomous Navigation and Sizing
@@ -127,22 +129,18 @@ num_sens = [1,2,2,3]
 updates = [True, True, True, True]
 global_storage = []
 
-num_iter = 40
+num_iter = 1
 seedling = 2000
 np.random.seed(seedling)
 
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()
-    for i in range(0,4):
+@profile(dump_stats=True)
+def run():
+    for i in range(0, 1):
         SENSORS = [num_sens[i], sens[i]]
         update = updates[i]
-        print('\n\n\n\n SENSOR COMBINATION %d \n\n\n\n' %(i+1))
+        print('\n\n\n\n SENSOR COMBINATION %d \n\n\n\n' % (i + 1))
 
-
-
-        mean_err_store = [0,0,0,0,0,0]
+        mean_err_store = [0, 0, 0, 0, 0, 0]
 
         random_seed = int(abs(np.random.normal(0, seedling)))
         NAVIGATION = [dt_nav, P, nav_q, starting_uncertanty, random_seed]
@@ -171,29 +169,28 @@ if __name__ == "__main__":
         mean_err_store[4] = sim.analysis.means[4]
         mean_err_store[5] = sim.analysis.means[5]
 
-
-        for iter in tqdm(range(1,num_iter)):
+        for iter in tqdm(range(1, num_iter)):
             random_seed = int(abs(np.random.normal(0, seedling)))
             NAVIGATION = [dt_nav, P, nav_q, starting_uncertanty, random_seed]
             sim = main.Main(cp.deepcopy(TIMING), cp.deepcopy(ORBITAL), cp.deepcopy(SENSORS), cp.deepcopy(NAVIGATION),
                             cp.deepcopy(ONBOARD_CLOCK), cp.deepcopy(update))
 
             sim.run_simulation()
-            covarx_store = covarx_store*(1-iter/(iter+1)) + sim.filter_covar[:,0]/(iter+1)
-            covary_store = covary_store*(1-iter/(iter+1)) + sim.filter_covar[:,1]/(iter+1)
-            covarz_store = covarz_store*(1-iter/(iter+1)) + sim.filter_covar[:,2]/(iter+1)
-            covarvx_store = covarvx_store*(1-iter/(iter+1)) + sim.filter_covar[:,3]/(iter+1)
-            covarvy_store = covarvy_store*(1-iter/(iter+1)) + sim.filter_covar[:,4]/(iter+1)
-            covarvz_store = covarvz_store*(1-iter/(iter+1)) + sim.filter_covar[:,5]/(iter+1)
+            covarx_store = covarx_store * (1 - iter / (iter + 1)) + sim.filter_covar[:, 0] / (iter + 1)
+            covary_store = covary_store * (1 - iter / (iter + 1)) + sim.filter_covar[:, 1] / (iter + 1)
+            covarz_store = covarz_store * (1 - iter / (iter + 1)) + sim.filter_covar[:, 2] / (iter + 1)
+            covarvx_store = covarvx_store * (1 - iter / (iter + 1)) + sim.filter_covar[:, 3] / (iter + 1)
+            covarvy_store = covarvy_store * (1 - iter / (iter + 1)) + sim.filter_covar[:, 4] / (iter + 1)
+            covarvz_store = covarvz_store * (1 - iter / (iter + 1)) + sim.filter_covar[:, 5] / (iter + 1)
 
-            freqx_store = freqx_store*(1-iter/(iter+1)) + sim.analysis.state_fft[:,0]/(iter+1)
+            freqx_store = freqx_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[:, 0] / (iter + 1)
             freqy_store = freqy_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[:, 1] / (iter + 1)
             freqz_store = freqz_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[:, 2] / (iter + 1)
             freqvx_store = freqvx_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[:, 3] / (iter + 1)
             freqvy_store = freqvy_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[:, 4] / (iter + 1)
             freqvz_store = freqvz_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[:, 5] / (iter + 1)
 
-            mean_err_store[0] = mean_err_store[0]*(1-iter/(iter+1)) + sim.analysis.means[0]/(iter+1)
+            mean_err_store[0] = mean_err_store[0] * (1 - iter / (iter + 1)) + sim.analysis.means[0] / (iter + 1)
             mean_err_store[1] = mean_err_store[1] * (1 - iter / (iter + 1)) + sim.analysis.means[1] / (iter + 1)
             mean_err_store[2] = mean_err_store[2] * (1 - iter / (iter + 1)) + sim.analysis.means[2] / (iter + 1)
             mean_err_store[3] = mean_err_store[3] * (1 - iter / (iter + 1)) + sim.analysis.means[3] / (iter + 1)
@@ -201,8 +198,9 @@ if __name__ == "__main__":
             mean_err_store[5] = mean_err_store[5] * (1 - iter / (iter + 1)) + sim.analysis.means[5] / (iter + 1)
 
             pickle1 = open("crash_saver2.txt", "wb")
-            pkl.dump([sens[i], iter, [covarx_store, covary_store, covarz_store, covarvx_store, covarvy_store, covarvz_store],
-                      [freqx_store, freqy_store, freqz_store, freqvx_store, freqvy_store, freqvz_store]], pickle1)
+            pkl.dump(
+                [sens[i], iter, [covarx_store, covary_store, covarz_store, covarvx_store, covarvy_store, covarvz_store],
+                 [freqx_store, freqy_store, freqz_store, freqvx_store, freqvy_store, freqvz_store]], pickle1)
             pickle1.close()
 
         mean_err_store = np.array(mean_err_store)
@@ -221,7 +219,7 @@ if __name__ == "__main__":
         freqvz_store = np.array(freqvz_store)
 
         mean_freq = [freqx_store, freqy_store, freqz_store,
-                      freqvx_store, freqvy_store, freqvz_store]
+                     freqvx_store, freqvy_store, freqvz_store]
 
         mean_covar = [covarx_store, covary_store, covarz_store,
                       covarvx_store, covarvy_store, covarvz_store]
@@ -235,6 +233,22 @@ if __name__ == "__main__":
         pickle2.close()
 
     print(len(global_storage))
+
+    return
+
+
+
+
+
+if __name__ == "__main__":
+    import doctest
+
+    doctest.testmod()
+    run()
+
+
+
+
 plt.figure(1)
 labels = ['X', 'Y', 'Z', 'Vx', 'Vy', 'Vz']
 # for i in range(0,6):

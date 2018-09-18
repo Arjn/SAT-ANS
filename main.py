@@ -206,19 +206,19 @@ class Main(object):
         sim_len_nav = (int(self.sim_length.value - self.global_timer.value))//int(self.nav_dt.value)
         sim_len = (int(self.sim_length.value - self.global_timer.value))
 
-        storage_true = [None]*sim_len_nav
-        self.filter_covar = [None]*sim_len_nav
-        storage_filter = [None]*sim_len_nav
-        timer_storage = [None]*sim_len_nav
-        test_storage = [None]*sim_len_nav
-        self.clock_storage = [None]*sim_len
+        storage_true = [None]*(sim_len_nav-1)
+        self.filter_covar = [None]*(sim_len_nav-1)
+        storage_filter = [None]*(sim_len_nav-1)
+        timer_storage = [None]*(sim_len_nav-1)
+        test_storage = [None]*(sim_len_nav-1)
+        self.clock_storage = [None]*(sim_len-1)
 
-        self.MSE_P = [None]*sim_len_nav
-        self.MSE_V = [None]*sim_len_nav
+        self.MSE_P = [None]*(sim_len_nav-1)
+        self.MSE_V = [None]*(sim_len_nav-1)
 
         nav_iter = 0
 
-        for iter in tqdm(range(int(self.sim_length.value - self.global_timer.value))):
+        for iter in tqdm(range(int(self.sim_length.value - self.global_timer.value)//int(self.global_dt.value))):
             self.state = self.Orbit.updateState(noise=True)
             self.nav_module.update_clock(self.global_dt)
             self.clock_storage[iter] = ((self.Orbit.ephem.epoch - self.nav_module.time).value)
@@ -228,7 +228,6 @@ class Main(object):
 
             for sens in self.sensor_objs:
                 sens.internal_clock = sens.sensor_timer_counter*self.global_dt  # update the sensor internal clock for updates
-                sens.observe(self.state, self.global_timer, self.Orbit.ephem.epoch)
                 sens.sensor_timer_counter += 1
 
             H_bar = []
@@ -236,16 +235,18 @@ class Main(object):
 
             self.nav_module.obs_func(self.sensor_objs)
             if self.nav_timer >= self.nav_dt:
+                # print("UPDATE")
                 navigation_counter = 0
                 # print("\nUPDATE\t %f \n" % self.global_timer.value) if self.global_timer > 0 else 0
+                for sens in self.sensor_objs:
+                    sens.observe(self.state, self.global_timer, self.Orbit.ephem.epoch)
                 self.nav_module.updateFilter(update=update)
                 R = self.nav_module.ukf.R
 
-                if self.global_timer > 0:
-                    for sens in self.sensor_objs:
-                        # sens.observe(self.state)
-                        if sens.measurement_ready and update:
-                            H_bar.append(sens.derivs)
+                # if self.global_timer > 0:
+                #     for sens in self.sensor_objs:
+                #         if sens.measurement_ready and update:
+                #             H_bar.append(sens.derivs)
                     # if len(H_bar) > 0 or not update:
                         # H_bar = np.concatenate(np.array(H_bar))
 
@@ -279,11 +280,11 @@ class Main(object):
             self.nav_timer = self.global_dt*navigation_counter
 
         storage_filter = np.array(storage_filter)
-        self.filter_covar = np.array(self.filter_covar)
+        filter_covar = np.array(self.filter_covar)
         timer_storage = np.array(timer_storage)
         storage_true = np.array(storage_true)
         # self.CRLB = np.array(self.CRLB)
-        self.nav_module.covar_store = np.array(self.nav_module.covar_store)
+        self.filter_covar = np.array(self.nav_module.covar_store)
         test_storage = np.array(test_storage)
         # print(self.Orbit.ephem.epoch)
         self.MSE_P = np.array(self.MSE_P)

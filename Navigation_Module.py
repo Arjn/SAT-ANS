@@ -39,7 +39,6 @@ class NavModule(object):
 
         self.clock_add_noise = clock_params[2]
         self.clock = ClockModule.ClockModel(clock_params[0], clock_params[1], seed=random_seed)
-        self.time_storage = []
 
         # make sure mu is in the right units - use the distance unit of start state, and time unit from timing
         dist_unit = starting_conds[1][0][1].unit ** 3
@@ -53,7 +52,6 @@ class NavModule(object):
             self.time += dt + self.clock.state[0] * dt.unit
         else:
             self.time += dt
-        self.time_storage.append(self.time)
 
     # def process_func(self, x, t):
     #     """"
