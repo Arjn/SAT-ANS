@@ -511,9 +511,9 @@ class XraySensor(PulsarSensor):
             N = (self.lib_objs[pulsar]['Bx'][0] + self.lib_objs[pulsar]['Fx'][0]*(1-self.lib_objs[pulsar]['puls_frac'][0]))\
                 * (self.detec_area*self.int_time.value*d)
             SNR = S/(np.sqrt(N + S))
-            self.sigma.append(self.lib_objs[pulsar]['puls_width'][0]/2*SNR)
-            self.R_params.append((self.lib_objs[pulsar]['puls_width'][0]/2*SNR))
-            self.SC_pulsar_times_noisy[pulsar] = self.SC_pulsar_times[pulsar] + np.random.normal(0, np.sqrt( self.lib_objs[pulsar]['puls_width'][0]/2*SNR))
+            self.sigma.append(self.lib_objs[pulsar]['puls_width'][0]/(2*SNR))
+            self.R_params.append((self.lib_objs[pulsar]['puls_width'][0]/(2*SNR)))
+            self.SC_pulsar_times_noisy[pulsar] = self.SC_pulsar_times[pulsar] + np.random.normal(0, np.sqrt( self.lib_objs[pulsar]['puls_width'][0]/(2*SNR)))
         return self.sigma
 
     def dhdx(self):
@@ -540,6 +540,7 @@ class XraySensor(PulsarSensor):
             self.measurement_ready = False
 
         elif not sim_time or self.internal_clock >= self.int_time:
+            self.sensor_timer_counter = 0  # reset timer counter
             self.which_pulsar()
             self.state_transform(epoch, x, self.refbody)
             self.time_transform(self.sim_time, self.mu)
@@ -611,6 +612,7 @@ class RadioSensor(PulsarSensor):
             self.measurement_ready = False
 
         elif not sim_time or self.internal_clock >= self.int_time:
+            self.sensor_timer_counter = 0
             self.which_pulsar()
             self.state_transform(epoch, x, self.refbody)
             self.time_transform(self.sim_time, self.mu)

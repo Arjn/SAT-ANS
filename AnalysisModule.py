@@ -17,6 +17,7 @@ class Analysis:
         self.true = true_state
         self.filter = filter_state
         self.covar = filter_covariance
+        self.err = self.true - self.filter
         self.time = time
         self.means = []
         self.std = []

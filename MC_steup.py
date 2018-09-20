@@ -35,8 +35,8 @@ Sensors
 # -------------TIMING ------------------
 
 # TIMING UNITS MUST BE THE SAME!!
-dt = 10. * u.s  # choice of s, min, hour, day, year
-Simulation_length = 20000. * u.s
+dt = 100. * u.s  # choice of s, min, hour, day, year
+Simulation_length = 200000. * u.s
 
 TIMING = [dt, Simulation_length]
 
@@ -50,12 +50,12 @@ Reference_Time = ["2018-01-01 00:00", 'tdb', 'iso']  # start epoch, timing refer
 File_Name = 'foo.txt'  # text file should be formatted appropriately TODO
 
 # If the type kepler is chosen, change the values below:
-a = 7136.635444 * u.km  # semi-major axis [km]
-ecc = 0.3 * u.one  # eccentricity [-]
-inc = 90. * u.deg  # inclination [deg]
-raan = 175. * u.deg  # Right ascension of the ascending node [deg]
-argp = 90. * u.deg  # Argument of perigee [deg]
-nu = 178. * u.deg  # True anaomaly [deg]
+a = (1*u.AU).to(u.km)  # semi-major axis [km]
+ecc = 0.0167 * u.one  # eccentricity [-]
+inc = 0. * u.deg  # inclination [deg]
+raan = 0. * u.deg  # Right ascension of the ascending node [deg]
+argp = 0. * u.deg  # Argument of perigee [deg]
+nu = 0. * u.deg  # True anaomaly [deg]
 kep = [a, ecc, inc, raan, argp, nu]
 
 # if the type is position_velocity, need the position and velocity at starting
@@ -72,10 +72,10 @@ ORBITAL = [Orbit_Type, Reference_Body, Reference_Time, kep, state, orbit_q]
 # format of the the sensor list: [ TYPE, [UPDATE RATE, VARIANCE, LIBRARY]]
 
 # Spectrometer variance is error in measurement of spectrum (wavelength)
-spectrometer = ['spectrometer', [10. * u.s, [1e-10], 'spectrometer_test.xml']]
+spectrometer = ['spectrometer', [100. * u.s, [1e-10], 'spectrometer_test.xml']]
 
 # Angle variance is error in measurement of theta and phi
-angle_sensor = ['angle_sensor', [10. * u.s, [4e-7, 4e-7], 'ang_sensor_lib.xml']]
+angle_sensor = ['angle_sensor', [100. * u.s, [4e-7, 4e-7], 'ang_sensor_lib.xml']]
 
 # Sizing parameters for RPNAV:
 
@@ -85,14 +85,14 @@ v_rec = 1.4  # - receiver central frequency [GHz]
 B = 400e6  # - Bandwidth [Hz]
 atten = -40  # - main sidelobe attenuation [dB]
 T_rec = 15  # - Receiver noise temperature [K]
-update_rate = 1000 * u.s
+update_rate = 2000 * u.s
 
 radio_PNAV = ['radio_pulsar', [update_rate, alpha, Ae, v_rec, B, atten, T_rec], 'radio_pulsar_lib.xml']
 
 # Sizing parameters for XPNAV:
 
 A = 100 ** 2  # - Detector area [cm^2]
-update_rate = 1000 * u.s
+update_rate = 2000 * u.s
 
 xray_PNAV = ['xray_pulsar', [update_rate, A], 'xray_pulsar_lib.xml']
 
@@ -105,7 +105,7 @@ SENSORS = [number_sensors, sensors]
 starting_uncertanty = [10., 1.]
 P = np.diag([100. ** 2, 100. ** 2, 100. ** 2, 10. ** 2, 10. ** 2, 10. ** 2])
 nav_q = 1e-4  # white noise spectral density
-dt_nav = 10. * u.s
+dt_nav = 100. * u.s
 
 
 # ------------ON-BOARD CLOCK---------------
@@ -124,13 +124,13 @@ ONBOARD_CLOCK = [initial_state, noise_spectra, add_noise]
 # print(i)
 # random_seed = randint(low=1, high=3000, size=1)
 
-sens = [[radio_PNAV], [radio_PNAV, spectrometer], [radio_PNAV, angle_sensor], [radio_PNAV, angle_sensor, spectrometer]]
-num_sens = [1,2,2,3]
-updates = [True, True, True, True]
+sens = [[radio_PNAV], [spectrometer], [angle_sensor], [angle_sensor, spectrometer]]
+num_sens = [1,1,1,2]
+updates = [False, True, True, True]
 global_storage = []
 
 num_iter = 1
-seedling = 2000
+seedling = 20000
 np.random.seed(seedling)
 
 @profile(dump_stats=True)
@@ -155,25 +155,26 @@ def run():
         covarvy_store = sim.filter_covar[:, 4]
         covarvz_store = sim.filter_covar[:, 5]
 
-        freqx_store = sim.analysis.state_fft[:, 0]
-        freqy_store = sim.analysis.state_fft[:, 1]
-        freqz_store = sim.analysis.state_fft[:, 2]
-        freqvx_store = sim.analysis.state_fft[:, 3]
-        freqvy_store = sim.analysis.state_fft[:, 4]
-        freqvz_store = sim.analysis.state_fft[:, 5]
+        freqx_store = sim.analysis.state_fft[0, :]
+        freqy_store = sim.analysis.state_fft[1, :]
+        freqz_store = sim.analysis.state_fft[2, :]
+        freqvx_store = sim.analysis.state_fft[3, :]
+        freqvy_store = sim.analysis.state_fft[4, :]
+        freqvz_store = sim.analysis.state_fft[5, :]
 
-        mean_err_store[0] = sim.analysis.means[0]
-        mean_err_store[1] = sim.analysis.means[1]
-        mean_err_store[2] = sim.analysis.means[2]
-        mean_err_store[3] = sim.analysis.means[3]
-        mean_err_store[4] = sim.analysis.means[4]
-        mean_err_store[5] = sim.analysis.means[5]
+        mean_err_store[0] = np.sqrt(sim.analysis.err[:,0]**2)
+        mean_err_store[1] = np.sqrt(sim.analysis.err[:,1]**2)
+        mean_err_store[2] = np.sqrt(sim.analysis.err[:,2]**2)
+        mean_err_store[3] = np.sqrt(sim.analysis.err[:,3]**2)
+        mean_err_store[4] = np.sqrt(sim.analysis.err[:,4]**2)
+        mean_err_store[5] = np.sqrt(sim.analysis.err[:,5]**2)
 
         for iter in tqdm(range(1, num_iter)):
             random_seed = int(abs(np.random.normal(0, seedling)))
             NAVIGATION = [dt_nav, P, nav_q, starting_uncertanty, random_seed]
             sim = main.Main(cp.deepcopy(TIMING), cp.deepcopy(ORBITAL), cp.deepcopy(SENSORS), cp.deepcopy(NAVIGATION),
                             cp.deepcopy(ONBOARD_CLOCK), cp.deepcopy(update))
+
 
             sim.run_simulation()
             covarx_store = covarx_store * (1 - iter / (iter + 1)) + sim.filter_covar[:, 0] / (iter + 1)
@@ -183,19 +184,19 @@ def run():
             covarvy_store = covarvy_store * (1 - iter / (iter + 1)) + sim.filter_covar[:, 4] / (iter + 1)
             covarvz_store = covarvz_store * (1 - iter / (iter + 1)) + sim.filter_covar[:, 5] / (iter + 1)
 
-            freqx_store = freqx_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[:, 0] / (iter + 1)
-            freqy_store = freqy_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[:, 1] / (iter + 1)
-            freqz_store = freqz_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[:, 2] / (iter + 1)
-            freqvx_store = freqvx_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[:, 3] / (iter + 1)
-            freqvy_store = freqvy_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[:, 4] / (iter + 1)
-            freqvz_store = freqvz_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[:, 5] / (iter + 1)
+            freqx_store = freqx_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[0, :] / (iter + 1)
+            freqy_store = freqy_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[1, :] / (iter + 1)
+            freqz_store = freqz_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[2, :] / (iter + 1)
+            freqvx_store = freqvx_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[3, :] / (iter + 1)
+            freqvy_store = freqvy_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[4, :] / (iter + 1)
+            freqvz_store = freqvz_store * (1 - iter / (iter + 1)) + sim.analysis.state_fft[5, :] / (iter + 1)
 
-            mean_err_store[0] = mean_err_store[0] * (1 - iter / (iter + 1)) + sim.analysis.means[0] / (iter + 1)
-            mean_err_store[1] = mean_err_store[1] * (1 - iter / (iter + 1)) + sim.analysis.means[1] / (iter + 1)
-            mean_err_store[2] = mean_err_store[2] * (1 - iter / (iter + 1)) + sim.analysis.means[2] / (iter + 1)
-            mean_err_store[3] = mean_err_store[3] * (1 - iter / (iter + 1)) + sim.analysis.means[3] / (iter + 1)
-            mean_err_store[4] = mean_err_store[4] * (1 - iter / (iter + 1)) + sim.analysis.means[4] / (iter + 1)
-            mean_err_store[5] = mean_err_store[5] * (1 - iter / (iter + 1)) + sim.analysis.means[5] / (iter + 1)
+            mean_err_store[0] = mean_err_store[0] * (1 - iter / (iter + 1)) + np.sqrt(sim.analysis.err[:,0] **2) / (iter + 1)
+            mean_err_store[1] = mean_err_store[1] * (1 - iter / (iter + 1)) + np.sqrt(sim.analysis.err[:,1] **2) / (iter + 1)
+            mean_err_store[2] = mean_err_store[2] * (1 - iter / (iter + 1)) + np.sqrt(sim.analysis.err[:,2] **2) / (iter + 1)
+            mean_err_store[3] = mean_err_store[3] * (1 - iter / (iter + 1)) + np.sqrt(sim.analysis.err[:,3] **2) / (iter + 1)
+            mean_err_store[4] = mean_err_store[4] * (1 - iter / (iter + 1)) + np.sqrt(sim.analysis.err[:,4] **2) / (iter + 1)
+            mean_err_store[5] = mean_err_store[5] * (1 - iter / (iter + 1)) + np.sqrt(sim.analysis.err[:,5] **2) / (iter + 1)
 
             pickle1 = open("crash_saver2.txt", "wb")
             pkl.dump(
@@ -228,7 +229,7 @@ def run():
 
         global_storage.append([mean_err, mean_covar, mean_freq])
 
-        pickle2 = open("storage_saver2.txt", "wb")
+        pickle2 = open("int.txt", "wb")
         pkl.dump(global_storage, pickle2)
         pickle2.close()
 

@@ -18,8 +18,8 @@ from poliastro.twobody import Orbit
 from poliastro.twobody.propagation import cowell, kepler
 from poliastro import coordinates
 from astropy.time import Time
-from astropy.coordinates import CartesianRepresentation#, get_body_barycentric_posvel, \
-    #ICRS, GCRS, CartesianDifferential
+from astropy.coordinates import CartesianRepresentation, get_body_barycentric_posvel, \
+    ICRS, GCRS, CartesianDifferential
 from astropy.coordinates import solar_system_ephemeris
 from collections import OrderedDict
 from poliastro.plotting import plot
@@ -133,8 +133,8 @@ class MakeOrbit(object):
         v = self.ephem.v.value
         self.state = np.array([r[0], r[1], r[2], v[0], v[1], v[2]])
         # print(self.state)
-        self.barycentric_state = (EphemerisModule.body_centered_to_icrs(self.ephem.r, self.ephem.v, self.refBody, self.ephem.epoch,
-                                               ephemeris=self.ref_ephem, Ephemkernel=self.ephem_kernel))
+        # self.barycentric_state = (EphemerisModule.body_centered_to_icrs(self.ephem.r, self.ephem.v, self.refBody, self.ephem.epoch,
+        #                                         ephemeris=self.ref_ephem, Ephemkernel=self.ephem_kernel))
         self.simStates.append(self.state)
         return(self.state)
 

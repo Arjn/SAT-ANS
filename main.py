@@ -228,6 +228,7 @@ class Main(object):
 
             for sens in self.sensor_objs:
                 sens.internal_clock = sens.sensor_timer_counter*self.global_dt  # update the sensor internal clock for updates
+                sens.observe(self.state, self.global_timer, self.Orbit.ephem.epoch)
                 sens.sensor_timer_counter += 1
 
             H_bar = []
@@ -238,8 +239,8 @@ class Main(object):
                 # print("UPDATE")
                 navigation_counter = 0
                 # print("\nUPDATE\t %f \n" % self.global_timer.value) if self.global_timer > 0 else 0
-                for sens in self.sensor_objs:
-                    sens.observe(self.state, self.global_timer, self.Orbit.ephem.epoch)
+                # for sens in self.sensor_objs:
+
                 self.nav_module.updateFilter(update=update)
                 R = self.nav_module.ukf.R
 
@@ -296,7 +297,7 @@ class Main(object):
         # self.analysis.Fourier_trans('Est_pos')
         self.analysis.Fourier_trans('Error')
         self.analysis.find_means()
-        plt.show()
+        # plt.show()
 
         # plt.figure(6)
         # CRLB_P = pd.read_csv('CRLB_P.csv')

@@ -3,6 +3,7 @@ import numpy as np
 from astropy import units as u
 import matplotlib.pyplot as plt
 from numpy.random import randint
+import pickle as pkl
 """
 SAT-ANS: Spacecraft Analysis Tool for Autonomous Navigation and Sizing
 
@@ -30,7 +31,7 @@ Sensors
 
 # TIMING UNITS MUST BE THE SAME!!
 dt = 10. * u.s  # choice of s, min, hour, day, year
-Simulation_length = 20000. * u.s
+Simulation_length = 200000. * u.s
 
 TIMING = [dt, Simulation_length]
 
@@ -78,7 +79,7 @@ v_rec = 1.4 # - receiver central frequency [GHz]
 B = 400e6   # - Bandwidth [Hz]
 atten = -40 # - main sidelobe attenuation [dB]
 T_rec = 15  # - Receiver noise temperature [K]
-update_rate = 10000 * u.s
+update_rate = 100000 * u.s
 
 radio_PNAV = ['radio_pulsar', [update_rate, alpha, Ae, v_rec, B, atten, T_rec], 'radio_pulsar_lib.xml']
 
@@ -91,8 +92,8 @@ xray_PNAV = ['xray_pulsar', [update_rate, A], 'xray_pulsar_lib.xml']
 
 
 
-number_sensors = 1
-sensors = [xray_PNAV]
+number_sensors = 2
+sensors = [xray_PNAV, angle_sensor]
 
 SENSORS = [number_sensors, sensors]
 
@@ -124,8 +125,13 @@ ONBOARD_CLOCK = [initial_state, noise_spectra, add_noise]
 if __name__ == "__main__":
      import doctest
      doctest.testmod()
-     sim = main.Main(TIMING, ORBITAL, SENSORS, NAVIGATION, ONBOARD_CLOCK)
+     sim = main.Main(TIMING, ORBITAL, SENSORS, NAVIGATION, ONBOARD_CLOCK, updates=True)
      sim.run_simulation()
+     save_params = [ sim.analysis.true,  sim.analysis.filter, sim.filter_covar, sim.analysis.state_fft]
+     pickle1 = open("XNAV_200000_no_clocknoise2.txt", "wb")
+     pkl.dump(save_params, pickle1)
+     pickle1.close()
+
 
 #     MSEs_V.append(sim.MSE_V)
 #     MSEs_P.append(sim.MSE_P)
