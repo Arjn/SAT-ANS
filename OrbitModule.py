@@ -15,7 +15,7 @@ plt.ion()  # To immediately show plots
 from astropy import units as u
 from poliastro.bodies import Earth, Mars, Sun
 from poliastro.twobody import Orbit
-from poliastro.twobody.propagation import cowell, kepler
+from poliastro.twobody.propagation import cowell, kepler, RK4
 from poliastro import coordinates
 from astropy.time import Time
 from astropy.coordinates import CartesianRepresentation, get_body_barycentric_posvel, \
@@ -126,7 +126,7 @@ class MakeOrbit(object):
         :return: True state of the spacecraft in cartestian coords
         """
         #print("start update")
-        self.ephem = self.ephem.propagate(self.dt, method=cowell, rtol=1e-15)
+        self.ephem = self.ephem.propagate(self.dt, method=RK4, rtol=1e-15)
         self.add_noise(self.ephem.r, self.ephem.v) if noise is True else None
         #print(Orbit.from_body_ephem(self.refBody, self.ephem.epoch))
         r = self.ephem.r.value

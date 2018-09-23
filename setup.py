@@ -53,6 +53,15 @@ argp = 90. * u.deg # Argument of perigee [deg]
 nu = 178. * u.deg # True anaomaly [deg]
 kep = [a, ecc, inc, raan, argp, nu]
 
+# If the type kepler is chosen, change the values below:
+# a = (1*u.AU).to(u.km)  # semi-major axis [km]
+# ecc = 0.0167 * u.one  # eccentricity [-]
+# inc = 0. * u.deg  # inclination [deg]
+# raan = 0. * u.deg  # Right ascension of the ascending node [deg]
+# argp = 0. * u.deg  # Argument of perigee [deg]
+# nu = 0. * u.deg  # True anaomaly [deg]
+# kep = [a, ecc, inc, raan, argp, nu]
+
 # if the type is position_velocity, need the position and velocity at starting
 # epoch
 state = [-6045 * u.km, -3490 * u.km, 2500 * u.km, -3.457 * u.km/u.s, 6.618 * u.km/u.s, 2.533 * u.km/u.s]  # position then velocity
@@ -66,10 +75,10 @@ ORBITAL = [Orbit_Type, Reference_Body, Reference_Time, kep, state, orbit_q]
 # format of the the sensor list: [ TYPE, [UPDATE RATE, VARIANCE, LIBRARY]]
 
 # Spectrometer variance is error in measurement of spectrum (wavelength)
-spectrometer = ['spectrometer', [10. * u.s, [1e-10], 'spectrometer_test.xml']]
+spectrometer = ['spectrometer', [100. * u.s, [1e-10], 'spectrometer_test.xml']]
 
 # Angle variance is error in measurement of theta and phi
-angle_sensor = ['angle_sensor', [10. * u.s, [4e-7, 4e-7], 'ang_sensor_lib.xml']]
+angle_sensor = ['angle_sensor', [100. * u.s, [4e-7, 4e-7], 'ang_sensor_lib.xml']]
 
 # Sizing parameters for RPNAV:
 
@@ -79,7 +88,7 @@ v_rec = 1.4 # - receiver central frequency [GHz]
 B = 400e6   # - Bandwidth [Hz]
 atten = -40 # - main sidelobe attenuation [dB]
 T_rec = 15  # - Receiver noise temperature [K]
-update_rate = 100000 * u.s
+update_rate = 10000 * u.s
 
 radio_PNAV = ['radio_pulsar', [update_rate, alpha, Ae, v_rec, B, atten, T_rec], 'radio_pulsar_lib.xml']
 
@@ -99,9 +108,9 @@ SENSORS = [number_sensors, sensors]
 
 
 # ----------- NAVIGATION ----------------
-starting_uncertanty = [10., 1.]
-P = np.diag([100.**2, 100.**2, 100.**2, 10.**2, 10.**2, 10.**2])
-nav_q = 1e-4 # white noise spectral density
+starting_uncertanty = [1., 0.1]
+P = np.diag([10.**2, 10.**2, 10.**2, 1.**2, 1.**2, 1.**2])
+nav_q = 1e-6 # white noise spectral density
 dt_nav = 10. * u.s
 random_seed = 2000
 NAVIGATION = [dt_nav, P, nav_q, starting_uncertanty, random_seed]
@@ -109,8 +118,8 @@ NAVIGATION = [dt_nav, P, nav_q, starting_uncertanty, random_seed]
 # ------------ON-BOARD CLOCK---------------
 # note that the clock state determines the error in the time
 # clock state = [error, error drift, drift rate]
-initial_state = [3e-6, 3e-11, 6e-18]
-noise_spectra = [1.11e-8, 2.22e-12, 6.66e-18]
+initial_state = [3e-6, 3e-8, 6e-14]
+noise_spectra = [1.11e-6, 2.22e-10, 6.66e-14]
 add_noise = False
 ONBOARD_CLOCK = [initial_state, noise_spectra, add_noise]
 

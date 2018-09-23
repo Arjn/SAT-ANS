@@ -144,14 +144,14 @@ class Analysis:
         self.means = []
         for i in range(0,6):
             self.means.append(np.mean(np.sqrt(err[:,i] ** 2)))
-        print(self.means)
+        # print(self.means)
 
     def find_stds(self):
         err = np.array(self.true - self.filter)
         self.std = []
         for i in range(0,6):
             self.std.append(np.std(err[:,i]))
-        print(self.std)
+        # print(self.std)
 
     def Fourier_trans(self, which):
         if which == 'True_pos':
