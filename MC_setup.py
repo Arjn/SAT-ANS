@@ -94,7 +94,7 @@ v_rec = 1.4  # - receiver central frequency [GHz]
 B = 400e6  # - Bandwidth [Hz]
 atten = -40  # - main sidelobe attenuation [dB]
 T_rec = 15  # - Receiver noise temperature [K]
-update_rate = 10000 * u.s
+update_rate = 1500 * u.s
 
 radio_PNAV = ['radio_pulsar', [update_rate, alpha, Ae, v_rec, B, atten, T_rec], 'radio_pulsar_lib.xml']
 
@@ -112,7 +112,7 @@ SENSORS = [number_sensors, sensors]
 
 # ----------- NAVIGATION ----------------
 starting_uncertanty = [10., 1.]
-P = np.diag([100. ** 2, 100. ** 2, 100. ** 2, 10 ** 2, 10 ** 2, 10 ** 2])
+P = np.diag([100. ** 2, 100. ** 2, 100. ** 2, 10. ** 2, 10. ** 2, 10. ** 2])
 nav_q = 1e-6  # white noise spectral density
 dt_nav = 100. * u.s
 
@@ -120,8 +120,8 @@ dt_nav = 100. * u.s
 # ------------ON-BOARD CLOCK---------------
 # note that the clock state determines the error in the time
 # clock state = [error, error drift, drift rate]
-initial_state = [3e-6, 3e-8, 6e-14]
-noise_spectra = [1.11e-6, 2.22e-10, 6.66e-14]
+initial_state = [3e-6, 3e-10, 6e-14]
+noise_spectra = [1.11e-10, 2.22e-22, 6.66e-35]
 add_noise = True
 ONBOARD_CLOCK = [initial_state, noise_spectra, add_noise]
 
@@ -137,8 +137,8 @@ sens = [[radio_PNAV], [radio_PNAV, spectrometer], [radio_PNAV, angle_sensor], [r
 num_sens = [1,2,2,3]
 updates = [True, True, True, True]
 global_storage = []
-file_name = "RNAV_sun_int_100_1m2_WITH_CLOCK_sen_int_10000s_100ITERATIONS.txt"
-num_iter = 100
+file_name = "RNAV_sun_int_100_1m2_WITH_CLOCK_sen_int_10000s_.txt"
+num_iter = 30
 seedling = 4000
 np.random.seed(seedling)
 print(sens[0])
@@ -236,6 +236,7 @@ def run():
 
 
         mean_err_store = np.array(mean_err_store)/(num_iter-fail)
+        # print(mean_err_store)
 
         std_store = np.sqrt(S/(num_iter-fail-1))
 

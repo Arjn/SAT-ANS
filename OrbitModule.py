@@ -120,6 +120,11 @@ class MakeOrbit(object):
         r += [np.random.normal(0, self.noise[0]),np.random.normal(0, self.noise[1]),np.random.normal(0, self.noise[2])]*self.ephem.state.r.unit
         v += [np.random.normal(0, self.noise[3]),np.random.normal(0, self.noise[4]),np.random.normal(0, self.noise[5])] * self.ephem.state.v.unit
 
+    def BC_state(self, PCI_state_r, PCI_state_v, time):
+        return (
+            EphemerisModule.body_centered_to_icrs(PCI_state_r, PCI_state_v, self.refBody, time,
+                                                 ephemeris=self.ref_ephem, Ephemkernel=self.ephem_kernel))
+
     def updateState(self, noise=True):
         """
         propagates the ephemeris by the timestep and updates the s/c state
@@ -132,9 +137,6 @@ class MakeOrbit(object):
         r = self.ephem.r.value
         v = self.ephem.v.value
         self.state = np.array([r[0], r[1], r[2], v[0], v[1], v[2]])
-        # print(self.state)
-        # self.barycentric_state = (EphemerisModule.body_centered_to_icrs(self.ephem.r, self.ephem.v, self.refBody, self.ephem.epoch,
-        #                                         ephemeris=self.ref_ephem, Ephemkernel=self.ephem_kernel))
         self.simStates.append(self.state)
         return(self.state)
 

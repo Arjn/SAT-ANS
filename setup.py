@@ -30,37 +30,37 @@ Sensors
 # -------------TIMING ------------------
 
 # TIMING UNITS MUST BE THE SAME!!
-dt = 10. * u.s  # choice of s, min, hour, day, year
-Simulation_length = 200000. * u.s
+dt = 100. * u.s  # choice of s, min, hour, day, year
+Simulation_length = 2000000. * u.s
 
 TIMING = [dt, Simulation_length]
 
 # ------------ ORBITAL -------------------
 
 Orbit_Type = 'kepler'  # 'kepler' 'position_velocity' 'ephemeris'
-Reference_Body = 'earth'  # earth, mars, sun
+Reference_Body = 'sun'  # earth, mars, sun
 Reference_Time = ["2018-01-01 00:00", 'tdb', 'iso']  # start epoch, timing reference, format]
 
 # If using an ephemeris, link to file
 File_Name = 'foo.txt'  # text file should be formatted appropriately TODO
 
 # If the type kepler is chosen, change the values below:
-a = 7136.635444 * u.km  # semi-major axis [km]
-ecc = 0.3 * u.one# eccentricity [-]
-inc = 90. * u.deg# inclination [deg]
-raan = 175. * u.deg   # Right ascension of the ascending node [deg]
-argp = 90. * u.deg # Argument of perigee [deg]
-nu = 178. * u.deg # True anaomaly [deg]
-kep = [a, ecc, inc, raan, argp, nu]
-
-# If the type kepler is chosen, change the values below:
-# a = (1*u.AU).to(u.km)  # semi-major axis [km]
-# ecc = 0.0167 * u.one  # eccentricity [-]
-# inc = 0. * u.deg  # inclination [deg]
-# raan = 0. * u.deg  # Right ascension of the ascending node [deg]
-# argp = 0. * u.deg  # Argument of perigee [deg]
-# nu = 0. * u.deg  # True anaomaly [deg]
+# a = 7136.635444 * u.km  # semi-major axis [km]
+# ecc = 0.3 * u.one# eccentricity [-]
+# inc = 90. * u.deg# inclination [deg]
+# raan = 175. * u.deg   # Right ascension of the ascending node [deg]
+# argp = 90. * u.deg # Argument of perigee [deg]
+# nu = 178. * u.deg # True anaomaly [deg]
 # kep = [a, ecc, inc, raan, argp, nu]
+
+# # If the type kepler is chosen, change the values below:
+a = (1*u.AU).to(u.km)  # semi-major axis [km]
+ecc = 0.0167 * u.one  # eccentricity [-]
+inc = 0. * u.deg  # inclination [deg]
+raan = 0. * u.deg  # Right ascension of the ascending node [deg]
+argp = 0. * u.deg  # Argument of perigee [deg]
+nu = 0. * u.deg  # True anaomaly [deg]
+kep = [a, ecc, inc, raan, argp, nu]
 
 # if the type is position_velocity, need the position and velocity at starting
 # epoch
@@ -95,14 +95,14 @@ radio_PNAV = ['radio_pulsar', [update_rate, alpha, Ae, v_rec, B, atten, T_rec], 
 # Sizing parameters for XPNAV:
 
 A = 100**2    # - Detector area [cm^2]
-update_rate = 10000 * u.s
+update_rate = 1500 * u.s
 
 xray_PNAV = ['xray_pulsar', [update_rate, A], 'xray_pulsar_lib.xml']
 
 
 
-number_sensors = 2
-sensors = [xray_PNAV, angle_sensor]
+number_sensors =1
+sensors = [xray_PNAV]
 
 SENSORS = [number_sensors, sensors]
 
@@ -111,16 +111,16 @@ SENSORS = [number_sensors, sensors]
 starting_uncertanty = [1., 0.1]
 P = np.diag([10.**2, 10.**2, 10.**2, 1.**2, 1.**2, 1.**2])
 nav_q = 1e-6 # white noise spectral density
-dt_nav = 10. * u.s
+dt_nav = 100. * u.s
 random_seed = 2000
 NAVIGATION = [dt_nav, P, nav_q, starting_uncertanty, random_seed]
 
 # ------------ON-BOARD CLOCK---------------
 # note that the clock state determines the error in the time
 # clock state = [error, error drift, drift rate]
-initial_state = [3e-6, 3e-8, 6e-14]
-noise_spectra = [1.11e-6, 2.22e-10, 6.66e-14]
-add_noise = False
+initial_state = [3e-6, 3e-10, 6e-14]
+noise_spectra = [1.11e-10, 2.22e-22, 6.66e-35]
+add_noise = True
 ONBOARD_CLOCK = [initial_state, noise_spectra, add_noise]
 
 # [orbital body, timing, start_state, filter]

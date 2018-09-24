@@ -175,7 +175,7 @@ class Spectrometer(Sensor):
         return np.array([0,0,0, temp[0], temp[1], temp[2]])
 
 
-    def observe(self, state=np.array([6, 1]), time=None , epoch=None):
+    def observe(self, state=np.array([6, 1]), time=None , epoch=None, time_error=None):
         """
         Observation equation for spectrometer. Through the base wavelengths read from the library and the current state
         of the spacecraft, the doppler equation is employed to calculate and then output the 'observed' wavelength
@@ -383,7 +383,7 @@ class AngSensor(Sensor):
             x[z] = np.arctan2(sum_sin1, sum_cos1)*self.angle_scaler
         return x
 
-    def observe(self, x, time=None, epoch=None):
+    def observe(self, x, time=None, epoch=None, time_error=None):
         """
         Observation equation of the angle sensor. Determines the (body centered) atitude and azimuth to the beacons
         from the positions of the beacons in space
@@ -466,19 +466,20 @@ class PulsarSensor(Sensor):
         self.sun_pos_SBB = EphemerisModule.get_body_barycentric_posvel('sun', time_ref, Ephemkernel= self.ephem_kernel)
         self.sun_pos_SBB = self.sun_pos_SBB[0].xyz.value
 
-    def time_transform(self, sim_time, mu):
+    def time_transform(self, sim_time, mu, time_error=None):
         self.SC_pulsar_times = {}
         c_temp = (c.to(u.km / u.s)).value
         mu = mu.to(u.km**3/u.s**2).value
         for pulsar in self.pulsar_names:
             norm_r = norm_vec(self.state_SBB)
             norm_b = norm_vec(self.sun_pos_SBB)
+            t_err = 0 if time_error is None else time_error
             n = spher2cart(np.array([self.lib_objs[pulsar]['direction'][0],self.lib_objs[pulsar]['direction'][1]]))
             self.SC_pulsar_times[pulsar] = sim_time.value + np.dot(n, self.pos_SSB-self.sun_pos_SBB)/c_temp + (1/(2*c_temp*self.lib_objs[pulsar]['dist'][0]*3.086e19)) \
                                                 * (-norm_r**2 + np.dot(n, self.pos_SSB) **2 + norm_b**2 - np.dot(self.sun_pos_SBB, n)**2) \
                                                 + (2*mu/(c_temp**3))*np.log(abs(1 + (np.dot((self.pos_SSB - self.sun_pos_SBB), n)
                                                                               + norm_vec(self.pos_SSB - self.sun_pos_SBB))/
-                                                                              np.dot(self.sun_pos_SBB, n) + norm_b))
+                                                                              np.dot(self.sun_pos_SBB, n) + norm_b)) + t_err
         return self.SC_pulsar_times
 
 
@@ -531,7 +532,7 @@ class XraySensor(PulsarSensor):
 
         return self.output
 
-    def observe(self, x, sim_time=None, epoch=None):
+    def observe(self, x, sim_time=None, epoch=None, time_error=None):
         self.derivs = []
         self.sim_time = sim_time
         self.measurements =[]
@@ -543,7 +544,7 @@ class XraySensor(PulsarSensor):
             self.sensor_timer_counter = 0  # reset timer counter
             self.which_pulsar()
             self.state_transform(epoch, x, self.refbody)
-            self.time_transform(self.sim_time, self.mu)
+            self.time_transform(self.sim_time, self.mu, time_error=time_error)
             self.timing_noise()
             self.measurement_ready = True
             self.measurements = self.SC_pulsar_times_noisy
@@ -603,7 +604,7 @@ class RadioSensor(PulsarSensor):
         return self.output
 
 
-    def observe(self, x, sim_time=None, epoch=None):
+    def observe(self, x, sim_time=None, epoch=None, time_error=None):
         self.sim_time = sim_time
         self.measurements = []
         self.derivs = []
@@ -615,7 +616,7 @@ class RadioSensor(PulsarSensor):
             self.sensor_timer_counter = 0
             self.which_pulsar()
             self.state_transform(epoch, x, self.refbody)
-            self.time_transform(self.sim_time, self.mu)
+            self.time_transform(self.sim_time, self.mu, time_error=time_error)
             self.timing_noise()
             self.measurement_ready = True
             self.measurements = self.SC_pulsar_times_noisy

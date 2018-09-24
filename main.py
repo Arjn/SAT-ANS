@@ -222,13 +222,14 @@ class Main(object):
             self.state = self.Orbit.updateState(noise=True)
             self.nav_module.update_clock(self.global_dt)
             self.clock_storage[iter] = ((self.Orbit.ephem.epoch - self.nav_module.time).value)
+            # print(self.clock_storage[iter])
             # print((self.Orbit.ephem.epoch - self.nav_module.time).value)
             # currently propagating an analytical state and adding noise to what is considered the true state
             # self.Orbit.state = self.state
 
             for sens in self.sensor_objs:
                 sens.internal_clock = sens.sensor_timer_counter*self.global_dt  # update the sensor internal clock for updates
-                sens.observe(self.state, self.global_timer, self.Orbit.ephem.epoch)
+                sens.observe(self.state, self.global_timer, self.Orbit.ephem.epoch, time_error=self.clock_storage[iter])
                 sens.sensor_timer_counter += 1
 
             H_bar = []
