@@ -131,7 +131,7 @@ class MakeOrbit(object):
         :return: True state of the spacecraft in cartestian coords
         """
         #print("start update")
-        self.ephem = self.ephem.propagate(self.dt, method=RK4, rtol=1e-15)
+        self.ephem = self.ephem.propagate(self.dt, method=cowell, rtol=1e-15)
         self.add_noise(self.ephem.r, self.ephem.v) if noise is True else None
         #print(Orbit.from_body_ephem(self.refBody, self.ephem.epoch))
         r = self.ephem.r.value

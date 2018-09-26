@@ -143,7 +143,7 @@ class Analysis:
         err = np.array(self.true - self.filter)
         self.means = []
         for i in range(0,6):
-            self.means.append(np.mean(np.sqrt(err[:,i] ** 2)))
+            self.means.append(np.sqrt(np.mean(err[:,i] ** 2)))
         print(self.means)
 
     def find_stds(self):

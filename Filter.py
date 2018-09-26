@@ -429,7 +429,7 @@ class UKF(object):
             self.x += dot(self.K, self.y)
             self.P = self.P - dot(self.K, Pz).dot(self.K.T)
 
-            I = dot(inv(self.P), Pxz).dot(inv(R)).dot(Pxz.T).dot(inv(self.P))
+            # I = dot(inv(self.P), Pxz).dot(inv(R)).dot(Pxz.T).dot(inv(self.P))
             #print(np.diag(I))
 
             # self.log_likelihood = logpdf(self.y, np.zeros(len(self.y)), Pz)

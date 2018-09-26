@@ -14,7 +14,7 @@ class ClockModel(object):
 
     def __init__(self, state, noise_spectrum, seed, M=None):
 
-        ran.seed(seed)
+        # ran.seed(seed)
 
         self.state = np.array(state)
 

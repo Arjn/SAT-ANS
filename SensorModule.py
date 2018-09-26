@@ -474,6 +474,8 @@ class PulsarSensor(Sensor):
             norm_r = norm_vec(self.state_SBB)
             norm_b = norm_vec(self.sun_pos_SBB)
             t_err = 0 if time_error is None else time_error
+            # print(time_error)
+            # print(t_err)
             n = spher2cart(np.array([self.lib_objs[pulsar]['direction'][0],self.lib_objs[pulsar]['direction'][1]]))
             self.SC_pulsar_times[pulsar] = sim_time.value + np.dot(n, self.pos_SSB-self.sun_pos_SBB)/c_temp + (1/(2*c_temp*self.lib_objs[pulsar]['dist'][0]*3.086e19)) \
                                                 * (-norm_r**2 + np.dot(n, self.pos_SSB) **2 + norm_b**2 - np.dot(self.sun_pos_SBB, n)**2) \

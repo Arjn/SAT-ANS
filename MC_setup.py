@@ -76,79 +76,76 @@ orbit_q = 1e-5
 
 ORBITAL = [Orbit_Type, Reference_Body, Reference_Time, kep, state, orbit_q]
 
-# -------------------- SENSORS ----------------
-
-# format of the the sensor list: [ TYPE, [UPDATE RATE, VARIANCE, LIBRARY]]
-
-# Spectrometer variance is error in measurement of spectrum (wavelength)
-spectrometer = ['spectrometer', [100. * u.s, [1e-10], 'spectrometer_test.xml']]
-
-# Angle variance is error in measurement of theta and phi
-angle_sensor = ['angle_sensor', [100. * u.s, [4e-7, 4e-7], 'ang_sensor_lib.xml']]
-
-# Sizing parameters for RPNAV:
-
-alpha = 0.5  # - polarization parameter [-]
-Ae = 1  # - Effective detection area [m^2]
-v_rec = 1.4  # - receiver central frequency [GHz]
-B = 400e6  # - Bandwidth [Hz]
-atten = -40  # - main sidelobe attenuation [dB]
-T_rec = 15  # - Receiver noise temperature [K]
-update_rate = 1500 * u.s
-
-radio_PNAV = ['radio_pulsar', [update_rate, alpha, Ae, v_rec, B, atten, T_rec], 'radio_pulsar_lib.xml']
-
-# Sizing parameters for XPNAV:
-
-A = 1800  # - Detector area [cm^2]
-update_rate = 1500 * u.s
-
-xray_PNAV = ['xray_pulsar', [update_rate, A], 'xray_pulsar_lib.xml']
-
-number_sensors = 1
-sensors = [xray_PNAV]
-
-SENSORS = [number_sensors, sensors]
 
 # ----------- NAVIGATION ----------------
 starting_uncertanty = [10., 1.]
 P = np.diag([100. ** 2, 100. ** 2, 100. ** 2, 10. ** 2, 10. ** 2, 10. ** 2])
-nav_q = 1e-6  # white noise spectral density
-dt_nav = 100. * u.s
+nav_q = 1e-5  # white noise spectral density
+dt_nav = dt
 
 
 # ------------ON-BOARD CLOCK---------------
 # note that the clock state determines the error in the time
 # clock state = [error, error drift, drift rate]
-initial_state = [3e-6, 3e-10, 6e-14]
-noise_spectra = [1.11e-10, 2.22e-22, 6.66e-35]
-add_noise = True
+initial_state = [6e-6, 3e-9, 6e-11]
+noise_spectra = [1.11e-9, 2.22e-20, 6.66e-24]
+add_noise = False
 ONBOARD_CLOCK = [initial_state, noise_spectra, add_noise]
 
-# [orbital body, timing, start_state, filter]
+# -------------------- SENSORS ----------------
 
-# MSEs_V = []
-# MSEs_P = []
-# for i in range(0,500):
-# print(i)
-# random_seed = randint(low=1, high=3000, size=1)
+# format of the the sensor list: [ TYPE, [UPDATE RATE, VARIANCE, LIBRARY]]
 
-sens = [[radio_PNAV], [radio_PNAV, spectrometer], [radio_PNAV, angle_sensor], [radio_PNAV, angle_sensor, spectrometer]]
+# Spectrometer variance is error in measurement of spectrum (wavelength)
+spectrometer = ['spectrometer', [dt, [1e-9], 'spectrometer_test.xml']]
+
+# Angle variance is error in measurement of theta and phi
+angle_sensor = ['angle_sensor', [dt, [1e-7, 1e-7], 'ang_sensor_lib.xml']]
+
+# Sizing parameters for RPNAV:
+
+alpha = 0.5  # - polarization parameter [-]
+Ae = 100  # - Effective detection area [m^2]
+v_rec = 1.4  # - receiver central frequency [GHz]
+B = 400e6  # - Bandwidth [Hz]
+atten = -40  # - main sidelobe attenuation [dB]
+T_rec = 15  # - Receiver noise temperature [K]
+update_rate_r = 1500 * u.s
+
+radio_PNAV = ['radio_pulsar', [update_rate_r, alpha, Ae, v_rec, B, atten, T_rec], 'radio_pulsar_lib.xml']
+
+# Sizing parameters for XPNAV:
+
+A = 100**2 # - Detector area [cm^2]
+update_rate_x = 1500 * u.s
+
+xray_PNAV = ['xray_pulsar', [update_rate_x, A], 'xray_pulsar_lib.xml']
+
+# sens = [[spectrometer], [spectrometer], [angle_sensor], [angle_sensor, spectrometer]]
+# sens = [[radio_PNAV], [radio_PNAV, spectrometer], [radio_PNAV, angle_sensor], [radio_PNAV, angle_sensor, spectrometer]]
+sens = [[xray_PNAV], [xray_PNAV, spectrometer], [xray_PNAV, angle_sensor], [xray_PNAV, angle_sensor, spectrometer]]
+file_name = f"q1e-5_XNAV_sun_{str(int(dt.value))}_{str(A)}cm2_{str(add_noise)}_CLOCK_sen_int_{str(int(update_rate_x.value))}s_{str(nav_q)}.txt"
+# file_name = f"q1e-5_RNAV_sun_{str(dt.value)}_{str(Ae)}m2_{str(add_noise)}_CLOCK_sen_int_{str(int(update_rate_r.value))}s_{str(nav_q)}.txt"
+# file_name = f"1q_NOPNAV_sun_{str(dt.value)}_{str(angle_sensor[1][1][0])}_{str(spectrometer[1][1][0])}_{str(add_noise)}_CLOCK_sen_int__{str(nav_q)}.txt"
+
+# file_name = '300_iteration_ang_sens.txt'
+
 num_sens = [1,2,2,3]
 updates = [True, True, True, True]
 global_storage = []
-file_name = "RNAV_sun_int_100_1m2_WITH_CLOCK_sen_int_10000s_.txt"
-num_iter = 30
+
+num_iter = 100
 seedling = 4000
 np.random.seed(seedling)
-print(sens[0])
-@profile(dump_stats=True)
+# print(sens[0])
+# @profile(dump_stats=True)
 def run():
     for i in range(0,4):
         SENSORS = [num_sens[i], sens[i]]
         update = updates[i]
         print('\n\n\n\n SENSOR COMBINATION %d \n\n\n\n' % (i + 1))
 
+        mean_SQerr_store = [0, 0, 0, 0, 0, 0]
         mean_err_store = [0, 0, 0, 0, 0, 0]
 
         random_seed = int(abs(np.random.normal(0, seedling)))
@@ -171,12 +168,19 @@ def run():
         freqvy_store = sim.analysis.state_fft[4, :]
         freqvz_store = sim.analysis.state_fft[5, :]
 
-        mean_err_store[0] = sim.analysis.err[:,0]
-        mean_err_store[1] = sim.analysis.err[:,1]
-        mean_err_store[2] = sim.analysis.err[:,2]
-        mean_err_store[3] = sim.analysis.err[:,3]
-        mean_err_store[4] = sim.analysis.err[:,4]
-        mean_err_store[5] = sim.analysis.err[:,5]
+        mean_err_store[0] = sim.analysis.err[:, 0]
+        mean_err_store[1] = sim.analysis.err[:, 1]
+        mean_err_store[2] = sim.analysis.err[:, 2]
+        mean_err_store[3] = sim.analysis.err[:, 3]
+        mean_err_store[4] = sim.analysis.err[:, 4]
+        mean_err_store[5] = sim.analysis.err[:, 5]
+
+        mean_SQerr_store[0] = sim.analysis.err[:,0]**2
+        mean_SQerr_store[1] = sim.analysis.err[:,1]**2
+        mean_SQerr_store[2] = sim.analysis.err[:,2]**2
+        mean_SQerr_store[3] = sim.analysis.err[:,3]**2
+        mean_SQerr_store[4] = sim.analysis.err[:,4]**2
+        mean_SQerr_store[5] = sim.analysis.err[:,5]**2
 
         M = sim.analysis.err
         S = 0
@@ -209,12 +213,19 @@ def run():
                 freqvy_store = freqvy_store  + sim.analysis.state_fft[4, :]
                 freqvz_store = freqvz_store + sim.analysis.state_fft[5, :]
 
-                mean_err_store[0] += sim.analysis.err[:,0]
-                mean_err_store[1] += sim.analysis.err[:,1]
-                mean_err_store[2] += sim.analysis.err[:,2]
-                mean_err_store[3] += sim.analysis.err[:,3]
-                mean_err_store[4] += sim.analysis.err[:,4]
-                mean_err_store[5] += sim.analysis.err[:,5]
+                mean_err_store[0] = sim.analysis.err[:, 0]
+                mean_err_store[1] = sim.analysis.err[:, 1]
+                mean_err_store[2] = sim.analysis.err[:, 2]
+                mean_err_store[3] = sim.analysis.err[:, 3]
+                mean_err_store[4] = sim.analysis.err[:, 4]
+                mean_err_store[5] = sim.analysis.err[:, 5]
+
+                mean_SQerr_store[0] += sim.analysis.err[:,0]**2
+                mean_SQerr_store[1] += sim.analysis.err[:,1]**2
+                mean_SQerr_store[2] += sim.analysis.err[:,2]**2
+                mean_SQerr_store[3] += sim.analysis.err[:,3]**2
+                mean_SQerr_store[4] += sim.analysis.err[:,4]**2
+                mean_SQerr_store[5] += sim.analysis.err[:,5]**2
 
                 #iterative standard deviation (non RMS!)
                 M_old = M
@@ -235,7 +246,8 @@ def run():
         print(fail)
 
 
-        mean_err_store = np.array(mean_err_store)/(num_iter-fail)
+        mean_SQerr_store = np.sqrt(np.array(mean_SQerr_store)/(num_iter-fail))
+        mean_err_store = np.array(mean_err_store) / (num_iter - fail)
         # print(mean_err_store)
 
         std_store = np.sqrt(S/(num_iter-fail-1))
@@ -260,7 +272,7 @@ def run():
         mean_covar = [covarx_store, covary_store, covarz_store,
                       covarvx_store, covarvy_store, covarvz_store]
 
-        mean_err = [mean_err_store]
+        mean_err = [mean_SQerr_store, mean_err_store]
 
         global_storage.append([mean_err, mean_covar, std_store, mean_freq])
 
@@ -268,7 +280,7 @@ def run():
         pkl.dump(global_storage, pickle2)
         pickle2.close()
 
-    print(sens[i])
+    # print(sens[i])
     print("clock noise = %s" % str(add_noise))
 
     return

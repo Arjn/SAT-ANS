@@ -101,16 +101,16 @@ xray_PNAV = ['xray_pulsar', [update_rate, A], 'xray_pulsar_lib.xml']
 
 
 
-number_sensors =1
-sensors = [xray_PNAV]
+number_sensors =2
+sensors = [spectrometer, angle_sensor]
 
 SENSORS = [number_sensors, sensors]
 
 
 # ----------- NAVIGATION ----------------
-starting_uncertanty = [1., 0.1]
+starting_uncertanty = [10., 1]
 P = np.diag([10.**2, 10.**2, 10.**2, 1.**2, 1.**2, 1.**2])
-nav_q = 1e-6 # white noise spectral density
+nav_q = 1e-4 # white noise spectral density
 dt_nav = 100. * u.s
 random_seed = 2000
 NAVIGATION = [dt_nav, P, nav_q, starting_uncertanty, random_seed]
@@ -118,9 +118,9 @@ NAVIGATION = [dt_nav, P, nav_q, starting_uncertanty, random_seed]
 # ------------ON-BOARD CLOCK---------------
 # note that the clock state determines the error in the time
 # clock state = [error, error drift, drift rate]
-initial_state = [3e-6, 3e-10, 6e-14]
+initial_state = [3e-6, 3e-9, 6e-12]
 noise_spectra = [1.11e-10, 2.22e-22, 6.66e-35]
-add_noise = True
+add_noise = False
 ONBOARD_CLOCK = [initial_state, noise_spectra, add_noise]
 
 # [orbital body, timing, start_state, filter]
